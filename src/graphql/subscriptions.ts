@@ -11,8 +11,8 @@ type GeneratedSubscription<InputType, OutputType> = string & {
 export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
   onCreateTodo(filter: $filter) {
     content
-    id
     createdAt
+    id
     updatedAt
     __typename
   }
@@ -21,24 +21,11 @@ export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo($filter: Mo
   APITypes.OnCreateTodoSubscriptionVariables,
   APITypes.OnCreateTodoSubscription
 >;
-export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
-  onUpdateTodo(filter: $filter) {
-    content
-    id
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateTodoSubscriptionVariables,
-  APITypes.OnUpdateTodoSubscription
->;
 export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
   onDeleteTodo(filter: $filter) {
     content
-    id
     createdAt
+    id
     updatedAt
     __typename
   }
@@ -46,4 +33,17 @@ export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo($filter: Mo
 ` as GeneratedSubscription<
   APITypes.OnDeleteTodoSubscriptionVariables,
   APITypes.OnDeleteTodoSubscription
+>;
+export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
+  onUpdateTodo(filter: $filter) {
+    content
+    createdAt
+    id
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateTodoSubscriptionVariables,
+  APITypes.OnUpdateTodoSubscription
 >;

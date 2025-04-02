@@ -2,37 +2,33 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateTodoInput = {
-  content?: string | null,
-  id?: string | null,
-};
-
 export type ModelTodoConditionInput = {
-  content?: ModelStringInput | null,
   and?: Array< ModelTodoConditionInput | null > | null,
-  or?: Array< ModelTodoConditionInput | null > | null,
-  not?: ModelTodoConditionInput | null,
+  content?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
+  not?: ModelTodoConditionInput | null,
+  or?: Array< ModelTodoConditionInput | null > | null,
   updatedAt?: ModelStringInput | null,
 };
 
 export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
+  beginsWith?: string | null,
+  between?: Array< string | null > | null,
+  contains?: string | null,
+  eq?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ne?: string | null,
+  notContains?: string | null,
   size?: ModelSizeInput | null,
 };
 
 export enum ModelAttributeTypes {
+  _null = "_null",
   binary = "binary",
   binarySet = "binarySet",
   bool = "bool",
@@ -42,26 +38,34 @@ export enum ModelAttributeTypes {
   numberSet = "numberSet",
   string = "string",
   stringSet = "stringSet",
-  _null = "_null",
 }
 
 
 export type ModelSizeInput = {
-  ne?: number | null,
+  between?: Array< number | null > | null,
   eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
+  le?: number | null,
+  lt?: number | null,
+  ne?: number | null,
+};
+
+export type CreateTodoInput = {
+  content?: string | null,
+  id?: string | null,
 };
 
 export type Todo = {
   __typename: "Todo",
   content?: string | null,
-  id: string,
   createdAt: string,
+  id: string,
   updatedAt: string,
+};
+
+export type DeleteTodoInput = {
+  id: string,
 };
 
 export type UpdateTodoInput = {
@@ -69,33 +73,29 @@ export type UpdateTodoInput = {
   id: string,
 };
 
-export type DeleteTodoInput = {
-  id: string,
-};
-
 export type ModelTodoFilterInput = {
-  content?: ModelStringInput | null,
-  id?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
   and?: Array< ModelTodoFilterInput | null > | null,
-  or?: Array< ModelTodoFilterInput | null > | null,
+  content?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  id?: ModelIDInput | null,
   not?: ModelTodoFilterInput | null,
+  or?: Array< ModelTodoFilterInput | null > | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
+  beginsWith?: string | null,
+  between?: Array< string | null > | null,
+  contains?: string | null,
+  eq?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ne?: string | null,
+  notContains?: string | null,
   size?: ModelSizeInput | null,
 };
 
@@ -106,85 +106,85 @@ export type ModelTodoConnection = {
 };
 
 export type ModelSubscriptionTodoFilterInput = {
-  content?: ModelSubscriptionStringInput | null,
-  id?: ModelSubscriptionIDInput | null,
-  createdAt?: ModelSubscriptionStringInput | null,
-  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionTodoFilterInput | null > | null,
+  content?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  id?: ModelSubscriptionIDInput | null,
   or?: Array< ModelSubscriptionTodoFilterInput | null > | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
 };
 
 export type ModelSubscriptionStringInput = {
-  ne?: string | null,
+  beginsWith?: string | null,
+  between?: Array< string | null > | null,
+  contains?: string | null,
   eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
   ge?: string | null,
   gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
   in?: Array< string | null > | null,
+  le?: string | null,
+  lt?: string | null,
+  ne?: string | null,
+  notContains?: string | null,
   notIn?: Array< string | null > | null,
 };
 
 export type ModelSubscriptionIDInput = {
-  ne?: string | null,
+  beginsWith?: string | null,
+  between?: Array< string | null > | null,
+  contains?: string | null,
   eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
   ge?: string | null,
   gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
   in?: Array< string | null > | null,
+  le?: string | null,
+  lt?: string | null,
+  ne?: string | null,
+  notContains?: string | null,
   notIn?: Array< string | null > | null,
 };
 
 export type CreateTodoMutationVariables = {
-  input: CreateTodoInput,
   condition?: ModelTodoConditionInput | null,
+  input: CreateTodoInput,
 };
 
 export type CreateTodoMutation = {
   createTodo?:  {
     __typename: "Todo",
     content?: string | null,
-    id: string,
     createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateTodoMutationVariables = {
-  input: UpdateTodoInput,
-  condition?: ModelTodoConditionInput | null,
-};
-
-export type UpdateTodoMutation = {
-  updateTodo?:  {
-    __typename: "Todo",
-    content?: string | null,
     id: string,
-    createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type DeleteTodoMutationVariables = {
-  input: DeleteTodoInput,
   condition?: ModelTodoConditionInput | null,
+  input: DeleteTodoInput,
 };
 
 export type DeleteTodoMutation = {
   deleteTodo?:  {
     __typename: "Todo",
     content?: string | null,
-    id: string,
     createdAt: string,
+    id: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTodoMutationVariables = {
+  condition?: ModelTodoConditionInput | null,
+  input: UpdateTodoInput,
+};
+
+export type UpdateTodoMutation = {
+  updateTodo?:  {
+    __typename: "Todo",
+    content?: string | null,
+    createdAt: string,
+    id: string,
     updatedAt: string,
   } | null,
 };
@@ -197,8 +197,8 @@ export type GetTodoQuery = {
   getTodo?:  {
     __typename: "Todo",
     content?: string | null,
-    id: string,
     createdAt: string,
+    id: string,
     updatedAt: string,
   } | null,
 };
@@ -215,8 +215,8 @@ export type ListTodosQuery = {
     items:  Array< {
       __typename: "Todo",
       content?: string | null,
-      id: string,
       createdAt: string,
+      id: string,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -231,22 +231,8 @@ export type OnCreateTodoSubscription = {
   onCreateTodo?:  {
     __typename: "Todo",
     content?: string | null,
-    id: string,
     createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
-};
-
-export type OnUpdateTodoSubscription = {
-  onUpdateTodo?:  {
-    __typename: "Todo",
-    content?: string | null,
     id: string,
-    createdAt: string,
     updatedAt: string,
   } | null,
 };
@@ -259,8 +245,22 @@ export type OnDeleteTodoSubscription = {
   onDeleteTodo?:  {
     __typename: "Todo",
     content?: string | null,
-    id: string,
     createdAt: string,
+    id: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTodoSubscriptionVariables = {
+  filter?: ModelSubscriptionTodoFilterInput | null,
+};
+
+export type OnUpdateTodoSubscription = {
+  onUpdateTodo?:  {
+    __typename: "Todo",
+    content?: string | null,
+    createdAt: string,
+    id: string,
     updatedAt: string,
   } | null,
 };

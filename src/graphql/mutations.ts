@@ -9,13 +9,13 @@ type GeneratedMutation<InputType, OutputType> = string & {
 };
 
 export const createTodo = /* GraphQL */ `mutation CreateTodo(
-  $input: CreateTodoInput!
   $condition: ModelTodoConditionInput
+  $input: CreateTodoInput!
 ) {
-  createTodo(input: $input, condition: $condition) {
+  createTodo(condition: $condition, input: $input) {
     content
-    id
     createdAt
+    id
     updatedAt
     __typename
   }
@@ -24,30 +24,14 @@ export const createTodo = /* GraphQL */ `mutation CreateTodo(
   APITypes.CreateTodoMutationVariables,
   APITypes.CreateTodoMutation
 >;
-export const updateTodo = /* GraphQL */ `mutation UpdateTodo(
-  $input: UpdateTodoInput!
-  $condition: ModelTodoConditionInput
-) {
-  updateTodo(input: $input, condition: $condition) {
-    content
-    id
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.UpdateTodoMutationVariables,
-  APITypes.UpdateTodoMutation
->;
 export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
-  $input: DeleteTodoInput!
   $condition: ModelTodoConditionInput
+  $input: DeleteTodoInput!
 ) {
-  deleteTodo(input: $input, condition: $condition) {
+  deleteTodo(condition: $condition, input: $input) {
     content
-    id
     createdAt
+    id
     updatedAt
     __typename
   }
@@ -55,4 +39,20 @@ export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
 ` as GeneratedMutation<
   APITypes.DeleteTodoMutationVariables,
   APITypes.DeleteTodoMutation
+>;
+export const updateTodo = /* GraphQL */ `mutation UpdateTodo(
+  $condition: ModelTodoConditionInput
+  $input: UpdateTodoInput!
+) {
+  updateTodo(condition: $condition, input: $input) {
+    content
+    createdAt
+    id
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateTodoMutationVariables,
+  APITypes.UpdateTodoMutation
 >;

@@ -11,8 +11,8 @@ type GeneratedQuery<InputType, OutputType> = string & {
 export const getTodo = /* GraphQL */ `query GetTodo($id: ID!) {
   getTodo(id: $id) {
     content
-    id
     createdAt
+    id
     updatedAt
     __typename
   }
@@ -26,8 +26,8 @@ export const listTodos = /* GraphQL */ `query ListTodos(
   listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       content
-      id
       createdAt
+      id
       updatedAt
       __typename
     }
