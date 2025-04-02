@@ -1,6 +1,6 @@
 projects:
   Codegen Project:
-    schemaPath: schema.json
+    schemaPath: amplify/backend/api/ch/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
@@ -16,3 +16,6 @@ projects:
         frontend: javascript
         framework: react
         maxDepth: 2
+extensions:
+  amplify:
+    version: 3
