@@ -11,16 +11,14 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^6.10.0",
     "aws-amplify": "^6.14.1",
-    "next": "15.2.4",
-    "react": "^19",
-    "react-dom": "^19"
+    "next": "15.2.4"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.15.0",
     "@aws-amplify/backend-cli": "^1.5.0",
     "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.5",
     "aws-cdk": "^2.1006.0",
     "aws-cdk-lib": "^2.187.0",
     "constructs": "^10.4.2",
