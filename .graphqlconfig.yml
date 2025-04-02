@@ -1,6 +1,6 @@
 projects:
   Codegen Project:
-    schemaPath: amplify/backend/api/ch/schema.graphql
+    schemaPath: schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
