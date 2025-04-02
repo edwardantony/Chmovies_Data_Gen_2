@@ -1,6 +1,6 @@
 projects:
   Codegen Project:
-    schemaPath: schema.json
+    schemaPath: schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
