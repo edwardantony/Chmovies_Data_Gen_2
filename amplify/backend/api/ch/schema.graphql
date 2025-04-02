@@ -33,6 +33,14 @@ type Todo @aws_api_key @aws_iam {
   updatedAt: AWSDateTime!
 }
 
+type CH_GEN2_Genres @aws_api_key @aws_iam {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
 enum ModelAttributeTypes {
   _null
   binary
