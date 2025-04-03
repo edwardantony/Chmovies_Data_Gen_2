@@ -5,31 +5,31 @@ import type { Schema } from "@/amplify/data/resource";
 const client = generateClient<Schema>();
 
 export default function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+  const [genres, setGenres] = useState<Array<Schema["Genres"]["type"]>>([]);
 
-  function listTodos() {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
+  function listGenres() {
+    client.models.Genres.observeQuery().subscribe({
+      next: (data) => setGenres([...data.items]),
     });
   }
 
   useEffect(() => {
-    listTodos();
+    listGenres();
   }, []);
 
   function createTodo() {
-    client.models.Todo.create({
-      content: window.prompt("Todo content"),
+    client.models.Genres.create({
+      name: window.prompt("Todo content"),
     });
   }
 
   return (
     <main>
-      <h1>My todos</h1>
+      <h1>My Genes</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
+        {genres.map((genre) => (
+          <li key={genre.id}>{genre.name}</li>
         ))}
       </ul>
       <div>
