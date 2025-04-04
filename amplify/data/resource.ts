@@ -7,10 +7,16 @@ const schema = a.schema({
     code: a.string(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
- //   contentAudioTracks: a.hasMany('ContentAudioTrack', 'audioId')
+    contentAudioTracks: a.hasMany('ContentAudioTrack', 'audioId')
   }).authorization(allow => [allow.publicApiKey()]),
 
-
+  ContentAudioTrack: a.model({
+    contentId: a.id().required(),
+    audioId: a.id().required(),
+    createdAt: a.datetime(),
+  //  content: a.belongsTo('Content', 'contentId'),
+    audioTrack: a.belongsTo('AudioTrack', 'audioId')
+  }).authorization(allow => [allow.publicApiKey()]),
 
   
 
