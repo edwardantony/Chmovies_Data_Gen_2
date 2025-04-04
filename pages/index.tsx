@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
 
+
+
+
 const client = generateClient<Schema>();
 
 export default function App() {
@@ -12,6 +15,8 @@ export default function App() {
       next: (data) => setGenres([...data.items]),
     });
   }
+
+
 
   useEffect(() => {
     listGenres();
