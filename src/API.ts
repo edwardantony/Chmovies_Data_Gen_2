@@ -157,6 +157,7 @@ export type Category = {
   __typename: "Category",
   id: string,
   name: string,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
   contentCategories?: ModelContentCategoryConnection | null,
@@ -210,6 +211,7 @@ export type Genre = {
   __typename: "Genre",
   id: string,
   name: string,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
   contentGenres?: ModelContentGenreConnection | null,
@@ -618,12 +620,14 @@ export type DeleteContentAudioTrackInput = {
 export type CreateCategoryInput = {
   id?: string | null,
   name: string,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
 
 export type ModelCategoryConditionInput = {
   name?: ModelStringInput | null,
+  sortOrder?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelCategoryConditionInput | null > | null,
@@ -631,9 +635,22 @@ export type ModelCategoryConditionInput = {
   not?: ModelCategoryConditionInput | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UpdateCategoryInput = {
   id: string,
   name?: string | null,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
@@ -673,12 +690,14 @@ export type DeleteContentCategoryInput = {
 export type CreateGenreInput = {
   id?: string | null,
   name: string,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
 
 export type ModelGenreConditionInput = {
   name?: ModelStringInput | null,
+  sortOrder?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelGenreConditionInput | null > | null,
@@ -689,6 +708,7 @@ export type ModelGenreConditionInput = {
 export type UpdateGenreInput = {
   id: string,
   name?: string | null,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
@@ -892,18 +912,6 @@ export type ModelFloatInput = {
 export type ModelSubscriptionPlanBillingCycleInput = {
   eq?: SubscriptionPlanBillingCycle | null,
   ne?: SubscriptionPlanBillingCycle | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelSubscriptionPlanVideoQualityInput = {
@@ -1558,6 +1566,7 @@ export type ModelContentAudioTrackFilterInput = {
 export type ModelCategoryFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  sortOrder?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelCategoryFilterInput | null > | null,
@@ -1585,6 +1594,7 @@ export type ModelContentCategoryFilterInput = {
 export type ModelGenreFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  sortOrder?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelGenreFilterInput | null > | null,
@@ -1953,10 +1963,23 @@ export type ModelSubscriptionContentAudioTrackFilterInput = {
 export type ModelSubscriptionCategoryFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
+  sortOrder?: ModelSubscriptionIntInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionCategoryFilterInput | null > | null,
   or?: Array< ModelSubscriptionCategoryFilterInput | null > | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
 };
 
 export type ModelSubscriptionContentCategoryFilterInput = {
@@ -1972,6 +1995,7 @@ export type ModelSubscriptionContentCategoryFilterInput = {
 export type ModelSubscriptionGenreFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
+  sortOrder?: ModelSubscriptionIntInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionGenreFilterInput | null > | null,
@@ -2048,18 +2072,6 @@ export type ModelSubscriptionSubscriptionPlanFilterInput = {
 };
 
 export type ModelSubscriptionFloatInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
-};
-
-export type ModelSubscriptionIntInput = {
   ne?: number | null,
   eq?: number | null,
   le?: number | null,
@@ -2480,6 +2492,7 @@ export type CreateCategoryMutation = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -2499,6 +2512,7 @@ export type UpdateCategoryMutation = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -2518,6 +2532,7 @@ export type DeleteCategoryMutation = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -2567,6 +2582,7 @@ export type CreateContentCategoryMutation = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -2615,6 +2631,7 @@ export type UpdateContentCategoryMutation = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -2663,6 +2680,7 @@ export type DeleteContentCategoryMutation = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -2681,6 +2699,7 @@ export type CreateGenreMutation = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -2700,6 +2719,7 @@ export type UpdateGenreMutation = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -2719,6 +2739,7 @@ export type DeleteGenreMutation = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -2768,6 +2789,7 @@ export type CreateContentGenreMutation = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -2816,6 +2838,7 @@ export type UpdateContentGenreMutation = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -2864,6 +2887,7 @@ export type DeleteContentGenreMutation = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -5428,6 +5452,7 @@ export type GetCategoryQuery = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -5452,6 +5477,7 @@ export type ListCategoriesQuery = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null >,
@@ -5498,6 +5524,7 @@ export type GetContentCategoryQuery = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -5536,6 +5563,7 @@ export type GetGenreQuery = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -5560,6 +5588,7 @@ export type ListGenresQuery = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null >,
@@ -5606,6 +5635,7 @@ export type GetContentGenreQuery = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -7079,6 +7109,7 @@ export type OnCreateCategorySubscription = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -7097,6 +7128,7 @@ export type OnUpdateCategorySubscription = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -7115,6 +7147,7 @@ export type OnDeleteCategorySubscription = {
     __typename: "Category",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentCategories?:  {
@@ -7163,6 +7196,7 @@ export type OnCreateContentCategorySubscription = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -7210,6 +7244,7 @@ export type OnUpdateContentCategorySubscription = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -7257,6 +7292,7 @@ export type OnDeleteContentCategorySubscription = {
       __typename: "Category",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -7274,6 +7310,7 @@ export type OnCreateGenreSubscription = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -7292,6 +7329,7 @@ export type OnUpdateGenreSubscription = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -7310,6 +7348,7 @@ export type OnDeleteGenreSubscription = {
     __typename: "Genre",
     id: string,
     name: string,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
     contentGenres?:  {
@@ -7358,6 +7397,7 @@ export type OnCreateContentGenreSubscription = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -7405,6 +7445,7 @@ export type OnUpdateContentGenreSubscription = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,
@@ -7452,6 +7493,7 @@ export type OnDeleteContentGenreSubscription = {
       __typename: "Genre",
       id: string,
       name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null,

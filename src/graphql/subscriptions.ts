@@ -219,6 +219,7 @@ export const onCreateCategory = /* GraphQL */ `subscription OnCreateCategory($fi
   onCreateCategory(filter: $filter) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -236,6 +237,7 @@ export const onUpdateCategory = /* GraphQL */ `subscription OnUpdateCategory($fi
   onUpdateCategory(filter: $filter) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -253,6 +255,7 @@ export const onDeleteCategory = /* GraphQL */ `subscription OnDeleteCategory($fi
   onDeleteCategory(filter: $filter) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -301,6 +304,7 @@ export const onCreateContentCategory = /* GraphQL */ `subscription OnCreateConte
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -349,6 +353,7 @@ export const onUpdateContentCategory = /* GraphQL */ `subscription OnUpdateConte
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -397,6 +402,7 @@ export const onDeleteContentCategory = /* GraphQL */ `subscription OnDeleteConte
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -414,6 +420,7 @@ export const onCreateGenre = /* GraphQL */ `subscription OnCreateGenre($filter: 
   onCreateGenre(filter: $filter) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -431,6 +438,7 @@ export const onUpdateGenre = /* GraphQL */ `subscription OnUpdateGenre($filter: 
   onUpdateGenre(filter: $filter) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -448,6 +456,7 @@ export const onDeleteGenre = /* GraphQL */ `subscription OnDeleteGenre($filter: 
   onDeleteGenre(filter: $filter) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -496,6 +505,7 @@ export const onCreateContentGenre = /* GraphQL */ `subscription OnCreateContentG
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -544,6 +554,7 @@ export const onUpdateContentGenre = /* GraphQL */ `subscription OnUpdateContentG
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -592,6 +603,7 @@ export const onDeleteContentGenre = /* GraphQL */ `subscription OnDeleteContentG
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename

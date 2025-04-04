@@ -228,6 +228,7 @@ export const createCategory = /* GraphQL */ `mutation CreateCategory(
   createCategory(input: $input, condition: $condition) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -248,6 +249,7 @@ export const updateCategory = /* GraphQL */ `mutation UpdateCategory(
   updateCategory(input: $input, condition: $condition) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -268,6 +270,7 @@ export const deleteCategory = /* GraphQL */ `mutation DeleteCategory(
   deleteCategory(input: $input, condition: $condition) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -317,6 +320,7 @@ export const createContentCategory = /* GraphQL */ `mutation CreateContentCatego
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -366,6 +370,7 @@ export const updateContentCategory = /* GraphQL */ `mutation UpdateContentCatego
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -415,6 +420,7 @@ export const deleteContentCategory = /* GraphQL */ `mutation DeleteContentCatego
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -435,6 +441,7 @@ export const createGenre = /* GraphQL */ `mutation CreateGenre(
   createGenre(input: $input, condition: $condition) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -455,6 +462,7 @@ export const updateGenre = /* GraphQL */ `mutation UpdateGenre(
   updateGenre(input: $input, condition: $condition) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -475,6 +483,7 @@ export const deleteGenre = /* GraphQL */ `mutation DeleteGenre(
   deleteGenre(input: $input, condition: $condition) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -524,6 +533,7 @@ export const createContentGenre = /* GraphQL */ `mutation CreateContentGenre(
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -573,6 +583,7 @@ export const updateContentGenre = /* GraphQL */ `mutation UpdateContentGenre(
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -622,6 +633,7 @@ export const deleteContentGenre = /* GraphQL */ `mutation DeleteContentGenre(
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename

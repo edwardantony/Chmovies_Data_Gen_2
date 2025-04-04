@@ -133,6 +133,7 @@ export const getCategory = /* GraphQL */ `query GetCategory($id: ID!) {
   getCategory(id: $id) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentCategories {
@@ -163,6 +164,7 @@ export const listCategories = /* GraphQL */ `query ListCategories(
     items {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -208,6 +210,7 @@ export const getContentCategory = /* GraphQL */ `query GetContentCategory($id: I
     category {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -247,6 +250,7 @@ export const getGenre = /* GraphQL */ `query GetGenre($id: ID!) {
   getGenre(id: $id) {
     id
     name
+    sortOrder
     createdAt
     updatedAt
     contentGenres {
@@ -274,6 +278,7 @@ export const listGenres = /* GraphQL */ `query ListGenres(
     items {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
@@ -319,6 +324,7 @@ export const getContentGenre = /* GraphQL */ `query GetContentGenre($id: ID!) {
     genre {
       id
       name
+      sortOrder
       createdAt
       updatedAt
       __typename
