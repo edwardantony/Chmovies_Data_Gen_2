@@ -21,6 +21,7 @@ const schema = a.schema({
   Category: a.model({
     id: a.id().required(),
     name: a.string().required(),
+    sortOrder: a.integer().default(0),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     contentCategories: a.hasMany('ContentCategory', 'categoryId')
@@ -37,6 +38,7 @@ const schema = a.schema({
   Genre: a.model({
     id: a.id().required(),
     name: a.string().required(),
+    sortOrder: a.integer().default(0),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     contentGenres: a.hasMany('ContentGenre', 'genreId')
