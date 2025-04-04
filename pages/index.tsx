@@ -8,33 +8,33 @@ import type { Schema } from "@/amplify/data/resource";
 const client = generateClient<Schema>();
 
 export default function App() {
-  const [genres, setGenres] = useState<Array<Schema["Genres"]["type"]>>([]);
+  const [AudioTracks, setAudioTracks] = useState<Array<Schema["AudioTrack"]["type"]>>([]);
 
-  function listGenres() {
-    client.models.Genres.observeQuery().subscribe({
-      next: (data) => setGenres([...data.items]),
+  function listAudioTracks() {
+    client.models.AudioTrack.observeQuery().subscribe({
+      next: (data) => setAudioTracks([...data.items]),
     });
   }
 
 
 
   useEffect(() => {
-    listGenres();
+    listAudioTracks();
   }, []);
 
   function createTodo() {
-    client.models.Genres.create({
-      name: window.prompt("Todo content"),
+    client.models.AudioTrack.create({
+      language: window.prompt("Todo content"),
     });
   }
 
   return (
     <main>
-      <h1>My Genes</h1>
+      <h1>My Content</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
-        {genres.map((genre) => (
-          <li key={genre.id}>{genre.name}</li>
+        {AudioTracks.map((AudioTrack) => (
+          <li key={AudioTrack.id}>{AudioTrack.language}</li>
         ))}
       </ul>
       <div>
