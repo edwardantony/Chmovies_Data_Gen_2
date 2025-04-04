@@ -14,16 +14,8 @@ const schema = a.schema({
     contentId: a.id().required(),
     audioId: a.id().required(),
     createdAt: a.datetime(),
-    content: a.belongsTo('Content', 'contentId'),
+  //  content: a.belongsTo('Content', 'contentId'),
     audioTrack: a.belongsTo('AudioTrack', 'audioId')
-  }).authorization(allow => [allow.publicApiKey()]),
-
-  Category: a.model({
-    id: a.id().required(),
-    name: a.string().required(),
-    createdAt: a.datetime(),
-    updatedAt: a.datetime(),
-    contentCategories: a.hasMany('ContentCategory', 'categoryId')
   }).authorization(allow => [allow.publicApiKey()]),
 
   
