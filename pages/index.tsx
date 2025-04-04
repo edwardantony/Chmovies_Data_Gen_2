@@ -22,16 +22,16 @@ export default function App() {
     listAudioTracks();
   }, []);
 
-  function createTodo() {
-    client.models.AudioTrack.create({
-      language: window.prompt("Todo content"),
-    });
-  }
+  // function createTodo() {
+  //   client.models.AudioTrack.create({
+  //     language: window.prompt("Todo content"),
+  //   });
+  // }
 
   return (
     <main>
       <h1>My Content</h1>
-      <button onClick={createTodo}>+ new</button>
+      {/* <button onClick={createTodo}>+ new</button> */}
       <ul>
         {AudioTracks.map((AudioTrack) => (
           <li key={AudioTrack.id}>{AudioTrack.language}</li>
