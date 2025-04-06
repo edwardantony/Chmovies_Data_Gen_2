@@ -44,7 +44,7 @@ const schema = a.schema({
     updatedAt: a.datetime(),
    // contentGenres: a.hasMany('ContentGenre', 'genreId')
   })
-  .identifier(['id', 'sortOrder'])
+  .identifier(['sortOrder'])
   .secondaryIndexes((index) => [
     index('name').name('byName')
   ])
