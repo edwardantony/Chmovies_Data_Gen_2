@@ -39,7 +39,7 @@ const schema = a.schema({
   Genre: a.model({
     id: a.id().required(),
     name: a.string().required(),
-    sortOrder: a.integer().default(0),
+    sortOrder: a.integer().default(0).required(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
    // contentGenres: a.hasMany('ContentGenre', 'genreId')
