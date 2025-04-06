@@ -42,23 +42,21 @@ const schema = a.schema({
     sortOrder: a.integer().default(0).required(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
-    contentGenres: a.hasMany('ContentGenre', ['genreId', 'genreSortOrder'])
+   // contentGenres: a.hasMany('ContentGenre', 'genreId')
   })
   .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index('sortOrder').name('bySortOrder'),
     index('name').name('byName')
   ])
   .authorization((allow) => [allow.publicApiKey()]),
 
-  ContentGenre: a.model({
-    contentId: a.id().required(),
-    genreId: a.id().required(),
-    genreSortOrder: a.integer().required(),
-    createdAt: a.datetime(),
-    content: a.belongsTo('Content', 'contentId'),
-    genre: a.belongsTo('Genre', ['genreId', 'genreSortOrder'])
-  }).authorization((allow) => [allow.publicApiKey()]),
+  // ContentGenre: a.model({
+  //   contentId: a.id().required(),
+  //   genreId: a.id().required(),
+  //   genreSortOrder: a.integer().required(),
+  //   createdAt: a.datetime(),
+  //   content: a.belongsTo('Content', 'contentId'),
+  // }).authorization((allow) => [allow.publicApiKey()]),
 
   // Country: a.model({
   //   id: a.id().required(),
@@ -114,71 +112,71 @@ const schema = a.schema({
   // }).authorization(allow => [allow.publicApiKey()]),
 
 
-  Content: a.model({
-    id: a.id().required(),
-    partnerId: a.id(),
-    title: a.string().required(),
-    localTitle: a.string().required(),
-    description: a.string(),
-    releaseDate: a.date(),
-    duration: a.integer().default(0),
-    type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
-    imagesDetails: a.json(),
-    videoOriginal: a.json(),
-    videoConverted: a.json().required(),
-    videoId: a.id().required(),
-    analyticsId: a.integer(),
-    maturityRating: a.string().required(),
-    audienceRating: a.float().default(0),
-    audienceLike: a.integer().default(0),
-    audienceDislike: a.integer().default(0),
-    isFeatured: a.boolean().default(false),
-    status: a.enum(['Active', 'Inactive', 'Draft']),
-    sortOrder: a.integer().required(),
-    createdAt: a.datetime(),
-    updatedAt: a.datetime(),
+  // Content: a.model({
+  //   id: a.id().required(),
+  //   partnerId: a.id(),
+  //   title: a.string().required(),
+  //   localTitle: a.string().required(),
+  //   description: a.string(),
+  //   releaseDate: a.date(),
+  //   duration: a.integer().default(0),
+  //   type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
+  //   imagesDetails: a.json(),
+  //   videoOriginal: a.json(),
+  //   videoConverted: a.json().required(),
+  //   videoId: a.id().required(),
+  //   analyticsId: a.integer(),
+  //   maturityRating: a.string().required(),
+  //   audienceRating: a.float().default(0),
+  //   audienceLike: a.integer().default(0),
+  //   audienceDislike: a.integer().default(0),
+  //   isFeatured: a.boolean().default(false),
+  //   status: a.enum(['Active', 'Inactive', 'Draft']),
+  //   sortOrder: a.integer().required(),
+  //   createdAt: a.datetime(),
+  //   updatedAt: a.datetime(),
     
-    // Relationships (will be connected in Phase 3)
-    // audioTracks: a.hasMany('ContentAudioTrack', 'contentId'),
-    // categories: a.hasMany('ContentCategory', 'contentId'),
-    // countries: a.hasMany('ContentCountry', 'contentId'),
-     genres: a.hasMany('ContentGenre', 'contentId'),
-    // subtitles: a.hasMany('ContentSubtitle', 'contentId'),
-    // userFavorites: a.hasMany('UserFavorite', 'contentId'),
-    // userReviews: a.hasMany('UserReview', 'contentId'),
-    // userWatchHistories: a.hasMany('UserWatchHistory', 'contentId')
-  }).authorization(allow => [allow.publicApiKey()]),
+  //   Relationships (will be connected in Phase 3)
+  //   audioTracks: a.hasMany('ContentAudioTrack', 'contentId'),
+  //   categories: a.hasMany('ContentCategory', 'contentId'),
+  //   countries: a.hasMany('ContentCountry', 'contentId'),
+  //   genres: a.hasMany('ContentGenre', 'contentId'),
+  //   subtitles: a.hasMany('ContentSubtitle', 'contentId'),
+  //   userFavorites: a.hasMany('UserFavorite', 'contentId'),
+  //   userReviews: a.hasMany('UserReview', 'contentId'),
+  //   userWatchHistories: a.hasMany('UserWatchHistory', 'contentId')
+  // }).authorization(allow => [allow.publicApiKey()]),
 
-  User: a.model({
-    id: a.id().required(),
-    cognitoId: a.string().required(),
-    email: a.string().required(),
-    username: a.string(),
-    firstName: a.string(),
-    lastName: a.string(),
-    phoneNumber: a.string(),
-    profilePicture: a.string(),
-    dateOfBirth: a.date(),
-    gender: a.enum(['Male', 'Female', 'Other', 'PreferNotToSay']),
-    country: a.string(),
-    languagePreference: a.string().default('en'),
-    maturityPreference: a.string().default('PG'),
-    status: a.enum(['Active', 'Inactive', 'Cancelled', 'Expired']),
-    lastLogin: a.datetime(),
-    accountStatus: a.enum(['Active', 'Suspended', 'Deleted']),
-    createdAt: a.datetime(),
-    updatedAt: a.datetime(),
+  // User: a.model({
+  //   id: a.id().required(),
+  //   cognitoId: a.string().required(),
+  //   email: a.string().required(),
+  //   username: a.string(),
+  //   firstName: a.string(),
+  //   lastName: a.string(),
+  //   phoneNumber: a.string(),
+  //   profilePicture: a.string(),
+  //   dateOfBirth: a.date(),
+  //   gender: a.enum(['Male', 'Female', 'Other', 'PreferNotToSay']),
+  //   country: a.string(),
+  //   languagePreference: a.string().default('en'),
+  //   maturityPreference: a.string().default('PG'),
+  //   status: a.enum(['Active', 'Inactive', 'Cancelled', 'Expired']),
+  //   lastLogin: a.datetime(),
+  //   accountStatus: a.enum(['Active', 'Suspended', 'Deleted']),
+  //   createdAt: a.datetime(),
+  //   updatedAt: a.datetime(),
     
-    // Relationships (will be connected in later phases)
-    //  userFavorites: a.hasMany('UserFavorite', 'userId'),
-    //  invoices: a.hasMany('Invoice', 'userId'),
-    //  logs: a.hasMany('Log', 'userId'),
-    //  notifications: a.hasMany('Notification', 'userId'),
-    //  payments: a.hasMany('Payment', 'userId'),
-    //  userReviews: a.hasMany('UserReview', 'userId'),
-    //  userSubscriptions: a.hasMany('UserSubscription', 'userId'),
-    //  userWatchHistories: a.hasMany('UserWatchHistory', 'userId')
-  }).authorization(allow => [allow.owner()]),
+  //   Relationships (will be connected in later phases)
+  //    userFavorites: a.hasMany('UserFavorite', 'userId'),
+  //    invoices: a.hasMany('Invoice', 'userId'),
+  //    logs: a.hasMany('Log', 'userId'),
+  //    notifications: a.hasMany('Notification', 'userId'),
+  //    payments: a.hasMany('Payment', 'userId'),
+  //    userReviews: a.hasMany('UserReview', 'userId'),
+  //    userSubscriptions: a.hasMany('UserSubscription', 'userId'),
+  //    userWatchHistories: a.hasMany('UserWatchHistory', 'userId')
+  // }).authorization(allow => [allow.owner()]),
 
   // UserSubscription: a.model({
   //   id: a.id().required(),
