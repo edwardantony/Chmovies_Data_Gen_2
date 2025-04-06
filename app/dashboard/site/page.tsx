@@ -9,7 +9,7 @@ import {
 } from 'material-react-table';
 import { ModelSortDirection } from '@/graphql/API';
 import { generateClient } from 'aws-amplify/api';
-import { listGenreBySortOrder } from '@/graphql/queries';
+import { listGenres } from '@/graphql/queries';
 import { createGenre, updateGenre, deleteGenre } from '@/graphql/mutations';
 import type { Schema } from '@/amplify/data/resource';
 import type { CreateGenreInput, UpdateGenreInput } from '@/graphql/API';
@@ -44,19 +44,18 @@ const GenreDashboard = () => {
 
       do {
         const result: any = await client.graphql({
-          query: listGenreBySortOrder,
+          query: listGenres,
           variables: {
-            sortOrder: 0,
-            sortDirection: ModelSortDirection.ASC,
+           // sortDirection: ModelSortDirection.ASC,
             limit: 1000,
             nextToken,
           },
         });
         console.log(result)
-        const items = result?.data?.listGenreBySortOrder.items || [];
+        const items = result?.data?.listGenres.items || [];
         const cleanedItems = items.map(({ __typename, ...rest }: any) => rest);
         allItems = [...allItems, ...cleanedItems];
-        nextToken = result?.data?.listGenreBySortOrder.nextToken;
+        nextToken = result?.data?.listGenres.nextToken;
       } while (nextToken);
 
       setAllData(allItems);
