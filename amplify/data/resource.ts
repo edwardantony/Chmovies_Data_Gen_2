@@ -21,46 +21,55 @@ const schema = a.schema({
   Category: a.model({
     id: a.id().required(),
     name: a.string().required(),
-    sortOrder: a.integer().default(0),
+    sortOrder: a.integer().default(0).required(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
-    contentCategories: a.hasMany('ContentCategory', 'categoryId')
+    contentCategories: a.hasMany('ContentCategory', ['categoryId', 'categorySortOrder']),
   })
+  .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index("sortOrder").name("bySortOrder"),
-    index("name").name("byName"),
+    index('sortOrder').name('bySortOrder'),
+    index('name').name('byName'),
   ])
-  .authorization(allow => [allow.publicApiKey()]),
-
+  .authorization((allow) => [allow.publicApiKey()]),
+  
   ContentCategory: a.model({
     contentId: a.id().required(),
     categoryId: a.id().required(),
+    categorySortOrder: a.integer().required(),
     createdAt: a.datetime(),
     content: a.belongsTo('Content', 'contentId'),
-    category: a.belongsTo('Category', 'categoryId')
-  }).authorization(allow => [allow.publicApiKey()]),
+    category: a.belongsTo('Category', ['categoryId', 'categorySortOrder']),
+  })
+  .identifier(['contentId', 'categoryId'])
+  .authorization((allow) => [allow.publicApiKey()]),
 
   Genre: a.model({
     id: a.id().required(),
     name: a.string().required(),
-    sortOrder: a.integer().default(0),
+    sortOrder: a.integer().default(0).required(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
-    contentGenres: a.hasMany('ContentGenre', 'genreId')
+    contentGenres: a.hasMany('ContentGenre', ['genreId', 'genreSortOrder']),
   })
+  .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index("sortOrder").name("bySortOrder"),
-    index("name").name("byName"),
+    index('sortOrder').name('bySortOrder'),
+    index('name').name('byName'),
   ])
-  .authorization(allow => [allow.publicApiKey()]),
+  .authorization((allow) => [allow.publicApiKey()]),
 
   ContentGenre: a.model({
     contentId: a.id().required(),
     genreId: a.id().required(),
+    genreSortOrder: a.integer().required(),
     createdAt: a.datetime(),
     content: a.belongsTo('Content', 'contentId'),
-    genre: a.belongsTo('Genre', 'genreId')
-  }).authorization(allow => [allow.publicApiKey()]),
+    genre: a.belongsTo('Genre', ['genreId', 'genreSortOrder']),
+  })
+  .identifier(['contentId', 'genreId'])
+  .authorization((allow) => [allow.publicApiKey()]),
+
 
   Country: a.model({
     id: a.id().required(),
