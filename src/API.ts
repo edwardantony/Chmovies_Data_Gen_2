@@ -69,7 +69,7 @@ export type Genre = {
 };
 
 export type UpdateGenreInput = {
-  id?: string | null,
+  id: string,
   name?: string | null,
   sortOrder: number,
   createdAt?: string | null,
@@ -77,7 +77,17 @@ export type UpdateGenreInput = {
 };
 
 export type DeleteGenreInput = {
+  id: string,
   sortOrder: number,
+};
+
+export type ModelIntKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
 };
 
 export type ModelGenreFilterInput = {
@@ -232,6 +242,7 @@ export type DeleteGenreMutation = {
 };
 
 export type GetGenreQueryVariables = {
+  id: string,
   sortOrder: number,
 };
 
@@ -247,7 +258,8 @@ export type GetGenreQuery = {
 };
 
 export type ListGenresQueryVariables = {
-  sortOrder?: number | null,
+  id?: string | null,
+  sortOrder?: ModelIntKeyConditionInput | null,
   filter?: ModelGenreFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,

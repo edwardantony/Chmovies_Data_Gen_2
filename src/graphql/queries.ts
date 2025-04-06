@@ -8,8 +8,8 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const getGenre = /* GraphQL */ `query GetGenre($sortOrder: Int!) {
-  getGenre(sortOrder: $sortOrder) {
+export const getGenre = /* GraphQL */ `query GetGenre($id: ID!, $sortOrder: Int!) {
+  getGenre(id: $id, sortOrder: $sortOrder) {
     id
     name
     sortOrder
@@ -20,13 +20,15 @@ export const getGenre = /* GraphQL */ `query GetGenre($sortOrder: Int!) {
 }
 ` as GeneratedQuery<APITypes.GetGenreQueryVariables, APITypes.GetGenreQuery>;
 export const listGenres = /* GraphQL */ `query ListGenres(
-  $sortOrder: Int
+  $id: ID
+  $sortOrder: ModelIntKeyConditionInput
   $filter: ModelGenreFilterInput
   $limit: Int
   $nextToken: String
   $sortDirection: ModelSortDirection
 ) {
   listGenres(
+    id: $id
     sortOrder: $sortOrder
     filter: $filter
     limit: $limit
