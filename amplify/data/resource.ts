@@ -70,7 +70,6 @@ const schema = a.schema({
   .identifier(['contentId', 'genreId'])
   .authorization((allow) => [allow.publicApiKey()]),
 
-
   Country: a.model({
     id: a.id().required(),
     name: a.string().required(),
