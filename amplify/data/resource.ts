@@ -25,7 +25,9 @@ const schema = a.schema({
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     contentCategories: a.hasMany('ContentCategory', 'categoryId')
-  }).authorization(allow => [allow.publicApiKey()]),
+  })
+  .secondaryIndexes((index) => [index("sortOrder"),index("name")])
+  .authorization(allow => [allow.publicApiKey()]),
 
   ContentCategory: a.model({
     contentId: a.id().required(),
@@ -42,7 +44,9 @@ const schema = a.schema({
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     contentGenres: a.hasMany('ContentGenre', 'genreId')
-  }).authorization(allow => [allow.publicApiKey()]),
+  })
+  .secondaryIndexes((index) => [index("sortOrder"),index("name")])
+  .authorization(allow => [allow.publicApiKey()]),
 
   ContentGenre: a.model({
     contentId: a.id().required(),
