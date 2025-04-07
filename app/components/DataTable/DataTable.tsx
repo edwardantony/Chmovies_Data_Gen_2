@@ -35,7 +35,7 @@ const handleChange = <T,>(
   setState(newState);
 };
 
-interface DataTableProps<TData extends Record<string, any>> {
+interface DataTableProps<TData extends Record<string, unknown>> {
   columns: MRT_ColumnDef<TData>[];
   data: TData[];
   pagination: PaginationState;
@@ -53,12 +53,12 @@ interface DataTableProps<TData extends Record<string, any>> {
   onCreate: (values: TData) => Promise<void>;
   onUpdate: (values: TData) => Promise<void>;
   onDelete: (id: string | null, isBulkDelete: boolean) => Promise<void>;
-  isTopToolbar?: boolean;
-  muiRowDragHandleProps?: any;
+  //isTopToolbar?: boolean;
+  //muiRowDragHandleProps?: any;
   onClearError?: () => void;
 }
 
-const DataTable = <TData extends Record<string, any> & { id?: string }>({
+const DataTable = <TData extends Record<string, unknown> & { id?: string }>({
   columns,
   data,
   pagination,
@@ -76,8 +76,7 @@ const DataTable = <TData extends Record<string, any> & { id?: string }>({
   onCreate,
   onUpdate,
   onDelete,
-  isTopToolbar,
-  muiRowDragHandleProps,
+  //muiRowDragHandleProps,
   onClearError,
 }: DataTableProps<TData>) => {
   const theme = useTheme();

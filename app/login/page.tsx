@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { FaLock, FaEnvelope, FaCaretDown, FaUnlock, FaEyeSlash, FaEye } from "react-icons/fa";
-import { countryCodes } from "../components/Utilities/CountryCode";
+import { countryCodes } from "@/components/Utilities/CountryCode";
 import { useRouter } from "next/navigation";
 import Footer from '../components/Layout/Footer';
 
@@ -464,7 +464,7 @@ const Login: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean) => void }> = ({ set
                   <input
                     type="checkbox"
                     id="rememberMe"
-                    className="w-4 h-4 p-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring focus:ring-blue-300 outline-none focus:outline-none focus:ring-0"
+                    className="w-4 h-4 p-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-300 outline-none focus:outline-none focus:ring-0"
                     checked={rememberMe}
                     onChange={() => setRememberMe(!rememberMe)}
                   />

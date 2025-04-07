@@ -78,7 +78,6 @@ export type UpdateGenreInput = {
 
 export type DeleteGenreInput = {
   id: string,
-  sortOrder: number,
 };
 
 export type ModelIntKeyConditionInput = {

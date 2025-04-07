@@ -39,14 +39,14 @@ const schema = a.schema({
   Genre: a.model({
     id: a.id().required(),
     name: a.string().required(),
-    sortOrder: a.integer().default(0).required(),
+    sortOrder: a.integer().default(0),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
    // contentGenres: a.hasMany('ContentGenre', 'genreId')
   })
-  .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index('name').name('byName')
+    index('name').name('byName'),
+    index('sortOrder').name('bySortOrder')
   ])
   .authorization((allow) => [allow.publicApiKey()]),
 

@@ -7,6 +7,7 @@ export async function isLoggedIn(): Promise<boolean> {
     console.log(session)
     return session?.tokens?.accessToken ? true : false;
   } catch (error) {
+    console.log(error)
     return false;
   }
 }

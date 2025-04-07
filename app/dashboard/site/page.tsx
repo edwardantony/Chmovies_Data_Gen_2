@@ -7,11 +7,11 @@ import {
   MRT_SortingState,
   MRT_RowSelectionState,
 } from 'material-react-table';
-import { ModelSortDirection } from '@/graphql/API';
+//import { ModelSortDirection } from '@/graphql/API';
 import { generateClient } from 'aws-amplify/api';
 import { listGenres } from '@/graphql/queries';
 import { createGenre, updateGenre, deleteGenre } from '@/graphql/mutations';
-import type { Schema } from '@/amplify/data/resource';
+import type { Schema } from '../../../amplify/data/resource';
 import type { CreateGenreInput, UpdateGenreInput } from '@/graphql/API';
 import DataTable from '../../components/DataTable/DataTable';
 import ClientLayout from '../../ClientLayout';
@@ -76,7 +76,7 @@ const GenreDashboard = () => {
     debounce((value: string) => {
       setGlobalFilter(value);
     }, 300),
-    [],
+    [setGlobalFilter],
   );
 
   const filteredData = useMemo(() => {
@@ -124,7 +124,7 @@ const GenreDashboard = () => {
         variables: { input },
       });
 
-      const created = (response as any).data.createGenre;
+      const created = (response).data.createGenre;
       setAllData((prev) => [...prev, created]);
       toast.success('Genre created!');
     } catch (err) {
@@ -140,7 +140,7 @@ const GenreDashboard = () => {
         variables: { input: values as UpdateGenreInput },
       });
 
-      const updated = (response as any).data.updateGenre;
+      const updated = (response).data.updateGenre;
       setAllData((prev) =>
         prev.map((item) => (item.id === updated.id ? updated : item)),
       );
@@ -153,20 +153,28 @@ const GenreDashboard = () => {
 
   const handleDelete = async (id: string | null, isBulkDelete: boolean) => {
     try {
-      const idsToDelete = isBulkDelete
+      const idsToDelete: string[] = isBulkDelete
         ? Object.keys(rowSelection)
             .map((idx) => paginatedData[Number(idx)]?.id)
-            .filter((id): id is string => !!id)
+            .filter((id): id is string => typeof id === 'string')
         : id
         ? [id]
         : [];
-
+  
+      if (idsToDelete.length === 0) {
+        toast.info('No genres selected for deletion');
+        return;
+      }
+  
       await Promise.all(
         idsToDelete.map((id) =>
-          client.graphql({ query: deleteGenre, variables: { input: { id } } }),
+          client.graphql({
+            query: deleteGenre,
+            variables: { input: { id } },
+          }),
         ),
       );
-
+  
       setAllData((prev) => prev.filter((genre) => !idsToDelete.includes(genre.id)));
       setRowSelection({});
       toast.success('Genre(s) deleted!');
@@ -223,7 +231,6 @@ const GenreDashboard = () => {
           onCreate={handleCreate}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
-          isTopToolbar
         />
         <ToastContainer position="bottom-right" autoClose={2500} hideProgressBar />
       </main>

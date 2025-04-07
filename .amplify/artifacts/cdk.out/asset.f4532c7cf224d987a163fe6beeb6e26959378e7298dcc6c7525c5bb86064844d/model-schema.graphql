@@ -1,0 +1,8 @@
+type Genre @model @auth(rules: [{allow: public, provider: apiKey}])
+{
+  id: ID! @primaryKey
+  name: String! @index(name: "byName", queryField: "listGenreByName")
+  sortOrder: Int @default(value: "0") @index(name: "bySortOrder", queryField: "listGenreBySortOrder")
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
