@@ -1,37 +1,22 @@
 "use client";
 
+
 import { useState, useEffect, useRef } from "react";
-import {
-  signIn,
-  confirmSignIn,
-  getCurrentUser,
-  signUp,
-  confirmSignUp,
-  resendSignUpCode,
- // forgotPassword,
- // confirmForgotPassword,
-} from 'aws-amplify/auth';
-import '@/app/components/lib/amplify-client.ts';
 import { FaLock, FaEnvelope, FaCaretDown, FaUnlock, FaEyeSlash, FaEye } from "react-icons/fa";
-import countries from "@/app/components/lib/countries";
+import { countryCodes } from "@/components/Utilities/CountryCode";
 import { useRouter } from "next/navigation";
-import { toast } from 'react-hot-toast';
-import { validateEmail, validatePassword } from "@/app/components/lib/validators"
-//import Footer from '../components/Layout/Footer';
+import Footer from '../components/Layout/Footer';
 
 interface Country {
-  name?: string;
-  dial_code: string;
   code: string;
-  iso_code?: string;
   flag: string;
+  country: string;
 }
 
 const Login = () => {
-  const [identifier, setIdentifier] = useState<string>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [identifier, setIdentifier] = useState<string>("");
   const [isPhone, setIsPhone] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -41,15 +26,13 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [showPasswordLogin, setShowPasswordLogin] = useState<boolean>(true);
   const [showCountryList, setShowCountryList] = useState<boolean>(false);
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(countries[2] ?? null);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(countryCodes[2]);
   const [forgotPassword, setForgotPassword] = useState<boolean>(false);
   const [attempts, setAttempts] = useState(0);
   const otpInputs = useRef<(HTMLInputElement | null)[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-  const OTP_TIMEOUT = 60;
-
 
   // Handle click outside country dropdown
   useEffect(() => {
@@ -92,11 +75,9 @@ const Login = () => {
     if (/^\d+$/.test(value)) {
       setIsPhone(true);
       setIdentifier(value);
-      setUsername(value);
     } else {
       setIsPhone(false);
       setIdentifier(value);
-      setUsername(value);
     }
   };
 
@@ -206,159 +187,21 @@ const Login = () => {
     setShowPasswordLogin(true);
   };
 
-  console.log('Raw username:', username);
-  console.log('Raw password:', password);
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault(); 
 
-  const handleLogin = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-  
-    // Input validation
-    if (!username.trim()) {
-      toast.error('Please enter your email');
-      return;
-    }
-  
-    if (showPasswordLogin && !password) {
-      toast.error('Please enter your password');
-      return;
-    }
-  
-    setLoading(true);
-  
-    try {
-      const credentials = {
-        username: username.trim(),
-        ...(showPasswordLogin && { password })
-      };
-  
-      const res = await signIn(credentials);
-      console.log(res);
-      // Handle response based on auth flow
-      if (res.isSignedIn) {
-        handleSuccessfulLogin();
-        return;
-      }
-  
-      switch (res.nextStep?.signInStep) {
-        case 'CONFIRM_SIGN_IN_WITH_SMS_CODE':
-        case 'CONFIRM_SIGN_IN_WITH_TOTP_CODE':
-          handleOtpFlow();
-          break;
-        case 'CONTINUE_SIGN_IN_WITH_MFA_SELECTION':
-          handleMfaSelection();
-          break;
-        case 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED':
-          handleNewPasswordRequired();
-          break;
-        default:
-          handleUnknownNextStep();
-      }
-    } catch (error) {
-      handleLoginError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  // Helper functions for different flows
-  const handleSuccessfulLogin = () => {
-    toast.success('Login successful');
-    if (rememberMe) {
-      localStorage.setItem('authSession', JSON.stringify({
-        username,
-        timestamp: Date.now(),
-        expiresIn: 3600 * 24 * 7 // 1 week
-      }));
-    }
-    //router.push('/dashboard');
-  };
-  
-  const handleOtpFlow = () => {
-    toast.success('Verification code sent');
-    setOtpSent(true);
-    setTimer(OTP_TIMEOUT);
-    setShowPasswordLogin(false);
-  };
-  
-  const handleMfaSelection = () => {
-    toast('Please select your MFA method');
-    // Implement MFA selection UI
-  };
-  
-  const handleNewPasswordRequired = () => {
-    toast.success('Please set a new password');
-   // router.push('/reset-password');
-  };
-  
-  const handleUnknownNextStep = () => {
-    toast('Additional authentication required');
-    setOtpSent(true);
-    setTimer(OTP_TIMEOUT);
-  };
-  
-  // Comprehensive error handling
-  const handleLoginError = (error: unknown) => {
-    console.error('Login error:', error);
-  
-    if (error instanceof Error) {
-      switch (error.name) {
-        case 'UserNotFoundException':
-          if (!showPasswordLogin) {
-            // For passwordless flow, treat as new user
-            toast('Account not found. Redirecting to sign up...');
-            router.push(`/signup?email=${encodeURIComponent(username)}`);
-          } else {
-            toast.error('Account not found. Please sign up.');
-          }
-          break;
-          
-        case 'UserNotConfirmedException':
-          toast.error('Please verify your account first');
-          setOtpSent(true);
-          setTimer(OTP_TIMEOUT);
-          break;
-          
-        case 'NotAuthorizedException':
-          if (showPasswordLogin) {
-            toast.error('Incorrect email or password');
-          } else {
-            toast.error('Login failed. Please try again.');
-          }
-          break;
-          
-        case 'PasswordResetRequiredException':
-          toast.error('Password reset required');
-          router.push('/reset-password');
-          break;
-          
-        case 'InvalidParameterException':
-          toast.error('Invalid login method');
-          setShowPasswordLogin(!showPasswordLogin); // Toggle login method
-          break;
-          
-        default:
-          toast.error(error.message || 'Login failed. Please try again.');
-      }
-    } else {
-      toast.error('An unexpected error occurred');
-    }
-  };
+    // Simulate login logic
+    if (identifier === 'admin' && password === "password") {
 
+      setIsLoggedIn(true);
+      setUsername("Admin")
+      // Set session in localStorage
 
-  const handleVerifyLogin = async () => {
-    if (!otp) {
-      toast.error('Enter OTP');
-      return;
-    }
-    setLoading(true);
-    try {
-      await confirmSignIn({ challengeResponse: otp.join('') });
-      toast.success('Login successful!');
+      localStorage.setItem('userSession', JSON.stringify({ username, isLoggedIn }));
+      // Redirect to dashboard
       router.push('/dashboard');
-    } catch (error) {
-      toast.error('Invalid OTP. Please try again.');
-    } finally {
-      setLoading(false);
+    } else {
+      alert('Invalid credentials');
     }
   };
 
@@ -368,7 +211,7 @@ const Login = () => {
     }
   }, [router]);
 
-  console.log(localStorage.getItem('authSession'))
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-900 text-gray-200">
@@ -377,8 +220,6 @@ const Login = () => {
             {forgotPassword ? <FaUnlock className="text-white text-xl" /> : <FaLock className="text-white text-xl" />}
             {forgotPassword ? "Reset Password" : "Login"}
           </h2>
-
-  
 
           <form className="mt-6">
             {forgotPassword ? (
@@ -427,7 +268,7 @@ const Login = () => {
                   <p className="text-sm text-gray-400 mb-2">
                     We sent a sign-in code to{" "}
                     <span className="font-semibold text-white">
-                      {isPhone ? `${selectedCountry?.code}${identifier}` : identifier}
+                      {isPhone ? `${selectedCountry.code}${identifier}` : identifier}
                     </span>
                     . The code will expire in 15 minutes.
                   </p>
@@ -445,23 +286,21 @@ const Login = () => {
                             className="flex items-center text-white font-semibold mr-2 bg-gray-600 px-2 py-1 rounded-md hover:bg-gray-500"
                             onClick={() => setShowCountryList(!showCountryList)}
                           >
-                            <span className="mr-1">{selectedCountry?.flag}</span>
-                            {selectedCountry?.code} <FaCaretDown className="ml-1" />
+                            <span className="mr-1">{selectedCountry.flag}</span>
+                            {selectedCountry.code} <FaCaretDown className="ml-1" />
                           </button>
 
                           {showCountryList && (
                             <ul className="absolute bg-gray-700 border border-gray-600 w-40 mt-1 rounded-lg text-white max-h-40 overflow-auto shadow-lg z-10">
-                              {countries.map((country) => (
-                                
+                              {countryCodes.map((country) => (
                                 <li
-                                  key={country?.code}
+                                  key={country.code}
                                   onClick={() => selectCountryCode(country)}
                                   className="flex items-center px-3 py-2 hover:bg-gray-600 cursor-pointer"
                                 >
-                                  <span className="mr-2">{country?.flag}</span>
-                                  {country?.code} ({country?.dial_code})
+                                  <span className="mr-2">{country.flag}</span>
+                                  {country.code} ({country.country})
                                 </li>
-
                               ))}
                             </ul>
                           )}
@@ -472,28 +311,29 @@ const Login = () => {
 
                       <input
                         type="text"
-                        className="w-full outline-none px-2 bg-gray-700 autofill:bg-gray-700 autofill:shadow-[inset_0_0_0px_1000px_#364153] text-white"
+                        className="w-full outline-none px-2 bg-gray-700 text-white"
                         placeholder={isPhone ? "Enter phone number" : "Enter email"}
                         value={identifier}
                         onChange={handleIdentifierChange}
+                        required
                       />
                     </div>
                   </div>
                 )}
-                
 
                 {/* Password Input (Hidden in OTP Mode) */}
                 {showPasswordLogin && !otpSent && (
                   <div className="mb-4">
                     <label className="block text-gray-400">Password</label>
-                    <div className="flex items-center border border-gray-600 rounded-lg px-3 py-2 mt-1 bg-gray-700 ">
+                    <div className="flex items-center border border-gray-600 rounded-lg px-3 py-2 mt-1 bg-gray-700">
                       <FaLock className="text-gray-400" />
                       <input
                         type={showPassword ? "text" : "password"}
-                        className="w-full outline-none px-2 bg-gray-700 autofill:shadow-[inset_0_0_0px_1000px_#364153] autofill:text-white text-white"
+                        className="w-full outline-none px-2 bg-gray-700 text-white"
                         placeholder="Enter password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
                       />
                       <button
                         type="button"
@@ -535,9 +375,8 @@ const Login = () => {
                       type="submit"
                       className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
                       onClick={handleLogin}
-                      disabled={loading}
                     >
-                      {loading ? 'Loading...' : 'Login'}
+                      Login
                     </button>
                     {attempts < 5 && (
                     <>
@@ -562,7 +401,7 @@ const Login = () => {
                     {!otpSent && (
                       <button
                         type="button"
-                        onClick={handleLogin}
+                        onClick={sendOtp}
                         className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
                       >
                         Send Login Code
@@ -573,7 +412,6 @@ const Login = () => {
                       <button
                         type="submit"
                         className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition"
-                        onClick={handleVerifyLogin}
                       >
                         Verify Login Code
                       </button>
@@ -644,7 +482,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-     
+      <Footer />
     </>
   );
 };

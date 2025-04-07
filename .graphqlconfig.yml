@@ -16,6 +16,3 @@ projects:
         frontend: javascript
         framework: react
         maxDepth: 2
-extensions:
-  amplify:
-    version: 3
