@@ -44,10 +44,7 @@ const schema = a.schema({
     updatedAt: a.datetime(),
    // contentGenres: a.hasMany('ContentGenre', 'genreId')
   })
-  .secondaryIndexes((index) => [
-    index('name').name('byName'),
-    index('sortOrder').name('bySortOrder')
-  ])
+
   .authorization((allow) => [allow.publicApiKey()]),
 
   // ContentGenre: a.model({
