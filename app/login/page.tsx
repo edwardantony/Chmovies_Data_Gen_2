@@ -368,7 +368,7 @@ const Login = () => {
     }
   }, [router]);
 
-  console.log(localStorage.getItem('authSession'))
+  
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-900 text-gray-200">
