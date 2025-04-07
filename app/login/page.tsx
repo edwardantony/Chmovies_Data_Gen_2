@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import {
   signIn,
   confirmSignIn,
-  getCurrentUser,
-  signUp,
-  confirmSignUp,
-  resendSignUpCode,
+  // getCurrentUser,
+  // signUp,
+  // confirmSignUp,
+  // resendSignUpCode,
  // forgotPassword,
  // confirmForgotPassword,
 } from 'aws-amplify/auth';
@@ -29,7 +29,7 @@ interface Country {
 
 const Login = () => {
   const [identifier, setIdentifier] = useState<string>("");
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  //const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isPhone, setIsPhone] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
@@ -213,12 +213,12 @@ const Login = () => {
     if (e) e.preventDefault();
   
     // Input validation
-    if (!username.trim()) {
+    if (!validateEmail) {
       toast.error('Please enter your email');
       return;
     }
   
-    if (showPasswordLogin && !password) {
+    if (showPasswordLogin && !validatePassword) {
       toast.error('Please enter your password');
       return;
     }
@@ -357,6 +357,7 @@ const Login = () => {
       router.push('/dashboard');
     } catch (error) {
       toast.error('Invalid OTP. Please try again.');
+      console.log(error)
     } finally {
       setLoading(false);
     }

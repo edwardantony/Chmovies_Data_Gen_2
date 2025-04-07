@@ -1,4 +1,4 @@
-export default [
+const countries = [
   { name: 'United States', dial_code: '+1', code: 'US', iso_code: 'USA', flag: '🇺🇸' },
   { name: 'United Kingdom', dial_code: '+44', code: 'GB', iso_code: 'UK', flag: '🇬🇧' },
   { name: 'India', dial_code: '+91', code: 'IN', iso_code: 'IND', flag: '🇮🇳' },
@@ -20,3 +20,5 @@ export default [
   { name: 'Mexico', dial_code: '+52', code: 'MX', iso_code: 'MEX', flag: '🇲🇽' },
   { name: 'South Africa', dial_code: '+27', code: 'ZA', iso_code: 'ZAF', flag: '🇿🇦' },
 ];
+
+export default countries;

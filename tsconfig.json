@@ -1,52 +1,28 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["next", "node"],
+    "lib": ["dom", "dom.iterable", "esnext", "ES6"],
+    "types": ["next", "node", "tailwindcss"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-    "forceConsistentCasingInFileNames": true,
-    "exactOptionalPropertyTypes": true,
-    "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "Node16",
-    "moduleResolution": "node16",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["./components/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/styles/*": ["./styles/*"],
-      "@/types/*": ["./types/*"]
-    },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    ".next/types/**/*.ts",
-    "tailwind.config.mts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/.next/*",
-    "**/out/*",
-    "**/dist/*"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
