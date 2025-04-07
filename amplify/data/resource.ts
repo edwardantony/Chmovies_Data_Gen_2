@@ -36,24 +36,27 @@ const schema = a.schema({
   //   category: a.belongsTo('Category', 'categoryId')
   // }).authorization(allow => [allow.publicApiKey()]),
 
-  Genre: a.model({
+  Genres: a.model({
     id: a.id().required(),
     name: a.string().required(),
     sortOrder: a.integer().default(0),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
-   // contentGenres: a.hasMany('ContentGenre', 'genreId')
+    contentGenres: a.hasMany('ContentGenre', 'genreId') 
   })
-
+  .secondaryIndexes((index) => [
+      index("id").name("bySortOrder").sortKeys(["sortOrder"]),
+      index("id").name("byCreated").sortKeys(["createdAt"]),
+  ])
   .authorization((allow) => [allow.publicApiKey()]),
 
-  // ContentGenre: a.model({
-  //   contentId: a.id().required(),
-  //   genreId: a.id().required(),
-  //   genreSortOrder: a.integer().required(),
-  //   createdAt: a.datetime(),
-  //   content: a.belongsTo('Content', 'contentId'),
-  // }).authorization((allow) => [allow.publicApiKey()]),
+  ContentGenres: a.model({
+    contentId: a.id().required(),
+    genreId: a.id().required(),
+    genreSortOrder: a.integer().required(),
+    createdAt: a.datetime(),
+  //  content: a.belongsTo('Content', 'contentId'),
+  }).authorization((allow) => [allow.publicApiKey()]),
 
   // Country: a.model({
   //   id: a.id().required(),
