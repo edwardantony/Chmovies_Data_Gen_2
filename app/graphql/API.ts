@@ -1,17 +1,18 @@
 /* tslint:disable */
-/* eslint-disable */
+ 
 //  This file was automatically generated and should not be edited.
 
 export type CreateGenreInput = {
   id?: string | null,
   name: string,
-  sortOrder: number,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
 
 export type ModelGenreConditionInput = {
   name?: ModelStringInput | null,
+  sortOrder?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelGenreConditionInput | null > | null,
@@ -59,11 +60,23 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type Genre = {
   __typename: "Genre",
   id: string,
   name: string,
-  sortOrder: number,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
@@ -71,22 +84,13 @@ export type Genre = {
 export type UpdateGenreInput = {
   id: string,
   name?: string | null,
-  sortOrder: number,
+  sortOrder?: number | null,
   createdAt?: string | null,
   updatedAt?: string | null,
 };
 
 export type DeleteGenreInput = {
   id: string,
-};
-
-export type ModelIntKeyConditionInput = {
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
 };
 
 export type ModelGenreFilterInput = {
@@ -114,18 +118,6 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export enum ModelSortDirection {
@@ -202,7 +194,7 @@ export type CreateGenreMutation = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
@@ -218,7 +210,7 @@ export type UpdateGenreMutation = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
@@ -234,7 +226,7 @@ export type DeleteGenreMutation = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
@@ -242,7 +234,6 @@ export type DeleteGenreMutation = {
 
 export type GetGenreQueryVariables = {
   id: string,
-  sortOrder: number,
 };
 
 export type GetGenreQuery = {
@@ -250,7 +241,7 @@ export type GetGenreQuery = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
@@ -258,7 +249,6 @@ export type GetGenreQuery = {
 
 export type ListGenresQueryVariables = {
   id?: string | null,
-  sortOrder?: ModelIntKeyConditionInput | null,
   filter?: ModelGenreFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
@@ -272,7 +262,7 @@ export type ListGenresQuery = {
       __typename: "Genre",
       id: string,
       name: string,
-      sortOrder: number,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null >,
@@ -295,7 +285,30 @@ export type ListGenreByNameQuery = {
       __typename: "Genre",
       id: string,
       name: string,
-      sortOrder: number,
+      sortOrder?: number | null,
+      createdAt?: string | null,
+      updatedAt?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListGenreBySortOrderQueryVariables = {
+  sortOrder: number,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelGenreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListGenreBySortOrderQuery = {
+  listGenreBySortOrder?:  {
+    __typename: "ModelGenreConnection",
+    items:  Array< {
+      __typename: "Genre",
+      id: string,
+      name: string,
+      sortOrder?: number | null,
       createdAt?: string | null,
       updatedAt?: string | null,
     } | null >,
@@ -312,7 +325,7 @@ export type OnCreateGenreSubscription = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
@@ -327,7 +340,7 @@ export type OnUpdateGenreSubscription = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
@@ -342,7 +355,7 @@ export type OnDeleteGenreSubscription = {
     __typename: "Genre",
     id: string,
     name: string,
-    sortOrder: number,
+    sortOrder?: number | null,
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,

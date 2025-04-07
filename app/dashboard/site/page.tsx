@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   MRT_ColumnDef,
   MRT_PaginationState,
@@ -8,11 +8,11 @@ import {
   MRT_RowSelectionState,
 } from 'material-react-table';
 //import { ModelSortDirection } from '@/graphql/API';
-import { generateClient } from 'aws-amplify/api';
+import { generateClient, GraphQLResult } from 'aws-amplify/api';
 import { listGenres } from '@/graphql/queries';
 import { createGenre, updateGenre, deleteGenre } from '@/graphql/mutations';
 import type { Schema } from '../../../amplify/data/resource';
-import type { CreateGenreInput, UpdateGenreInput } from '@/graphql/API';
+import type { ListGenresQuery, CreateGenreInput, UpdateGenreInput } from '@/graphql/API';
 import DataTable from '../../components/DataTable/DataTable';
 import ClientLayout from '../../ClientLayout';
 import { toast, ToastContainer } from 'react-toastify';
@@ -43,19 +43,16 @@ const GenreDashboard = () => {
       let allItems: Genre[] = [];
 
       do {
-        const result: any = await client.graphql({
+        const response: GraphQLResult<ListGenresQuery> = await client.graphql({
           query: listGenres,
           variables: {
-           // sortDirection: ModelSortDirection.ASC,
             limit: 1000,
             nextToken,
           },
         });
-        console.log(result)
-        const items = result?.data?.listGenres.items || [];
-        const cleanedItems = items.map(({ __typename, ...rest }: any) => rest);
-        allItems = [...allItems, ...cleanedItems];
-        nextToken = result?.data?.listGenres.nextToken;
+        const items = response?.data?.listGenres?.items as Genre[] ?? [];        
+        allItems = [...allItems, ...items];
+        nextToken = response.data?.listGenres?.nextToken ?? null;
       } while (nextToken);
 
       setAllData(allItems);
@@ -72,11 +69,10 @@ const GenreDashboard = () => {
     fetchAllGenres();
   }, []);
 
-  const debouncedSetGlobalFilter = useCallback(
-    debounce((value: string) => {
+  const debouncedSetGlobalFilter = useMemo(() => debounce((value: string) => {
       setGlobalFilter(value);
     }, 300),
-    [setGlobalFilter],
+    [setGlobalFilter]
   );
 
   const filteredData = useMemo(() => {

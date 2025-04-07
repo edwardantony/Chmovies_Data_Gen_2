@@ -13,7 +13,8 @@ interface Country {
   country: string;
 }
 
-const Login: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean) => void }> = ({ setIsLoggedIn }) => {
+const Login = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [identifier, setIdentifier] = useState<string>("");
   const [isPhone, setIsPhone] = useState<boolean>(false);
   const [username, setUsername] = useState('');
@@ -187,12 +188,16 @@ const Login: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean) => void }> = ({ set
   };
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault(); console.log(username)
+    e.preventDefault(); 
+
     // Simulate login logic
     if (identifier === 'admin' && password === "password") {
+
+      setIsLoggedIn(true);
+      setUsername("Admin")
       // Set session in localStorage
 
-      localStorage.setItem('userSession', JSON.stringify({ username, isLoggedIn: true }));
+      localStorage.setItem('userSession', JSON.stringify({ username, isLoggedIn }));
       // Redirect to dashboard
       router.push('/dashboard');
     } else {
