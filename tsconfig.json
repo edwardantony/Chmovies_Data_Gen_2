@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6", // upgrade from es5 for better modern JS support
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true, // helps avoid casing issues
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -23,16 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "amplify", 
-    "**/*.test.ts", 
-    "**/*.test.tsx"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "amplify"]
 }
