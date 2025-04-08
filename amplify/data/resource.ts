@@ -44,8 +44,8 @@ const schema = a.schema({
     updatedAt: a.datetime(),
     contentGenres: a.hasMany('ContentGenre', 'genreId') 
   })
+  .identifier(["id", "sortOrder"])
   .secondaryIndexes((index) => [
-      index("id").name("bySortOrder").sortKeys(["sortOrder"]),
       index("id").name("byCreated").sortKeys(["createdAt"]),
   ])
   .authorization((allow) => [allow.publicApiKey()]),
@@ -55,7 +55,7 @@ const schema = a.schema({
     genreId: a.id().required(),
     genreSortOrder: a.integer().required(),
     createdAt: a.datetime(),
-  //  content: a.belongsTo('Content', 'contentId'),
+    content: a.belongsTo('Content', 'contentId'),
   }).authorization((allow) => [allow.publicApiKey()]),
 
   // Country: a.model({
@@ -112,40 +112,40 @@ const schema = a.schema({
   // }).authorization(allow => [allow.publicApiKey()]),
 
 
-  // Content: a.model({
-  //   id: a.id().required(),
-  //   partnerId: a.id(),
-  //   title: a.string().required(),
-  //   localTitle: a.string().required(),
-  //   description: a.string(),
-  //   releaseDate: a.date(),
-  //   duration: a.integer().default(0),
-  //   type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
-  //   imagesDetails: a.json(),
-  //   videoOriginal: a.json(),
-  //   videoConverted: a.json().required(),
-  //   videoId: a.id().required(),
-  //   analyticsId: a.integer(),
-  //   maturityRating: a.string().required(),
-  //   audienceRating: a.float().default(0),
-  //   audienceLike: a.integer().default(0),
-  //   audienceDislike: a.integer().default(0),
-  //   isFeatured: a.boolean().default(false),
-  //   status: a.enum(['Active', 'Inactive', 'Draft']),
-  //   sortOrder: a.integer().required(),
-  //   createdAt: a.datetime(),
-  //   updatedAt: a.datetime(),
+  Content: a.model({
+    id: a.id().required(),
+    partnerId: a.id(),
+    title: a.string().required(),
+    localTitle: a.string().required(),
+    description: a.string(),
+    releaseDate: a.date(),
+    duration: a.integer().default(0),
+    type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
+    imagesDetails: a.json(),
+    videoOriginal: a.json(),
+    videoConverted: a.json().required(),
+    videoId: a.id().required(),
+    analyticsId: a.integer(),
+    maturityRating: a.string().required(),
+    audienceRating: a.float().default(0),
+    audienceLike: a.integer().default(0),
+    audienceDislike: a.integer().default(0),
+    isFeatured: a.boolean().default(false),
+    status: a.enum(['Active', 'Inactive', 'Draft']),
+    sortOrder: a.integer().required(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
     
-  //   Relationships (will be connected in Phase 3)
-  //   audioTracks: a.hasMany('ContentAudioTrack', 'contentId'),
-  //   categories: a.hasMany('ContentCategory', 'contentId'),
-  //   countries: a.hasMany('ContentCountry', 'contentId'),
-  //   genres: a.hasMany('ContentGenre', 'contentId'),
-  //   subtitles: a.hasMany('ContentSubtitle', 'contentId'),
-  //   userFavorites: a.hasMany('UserFavorite', 'contentId'),
-  //   userReviews: a.hasMany('UserReview', 'contentId'),
-  //   userWatchHistories: a.hasMany('UserWatchHistory', 'contentId')
-  // }).authorization(allow => [allow.publicApiKey()]),
+  //  Relationships (will be connected in Phase 3)
+    // audioTracks: a.hasMany('ContentAudioTrack', 'contentId'),
+    // categories: a.hasMany('ContentCategory', 'contentId'),
+    // countries: a.hasMany('ContentCountry', 'contentId'),
+     genres: a.hasMany('ContentGenre', 'contentId'),
+    // subtitles: a.hasMany('ContentSubtitle', 'contentId'),
+    // userFavorites: a.hasMany('UserFavorite', 'contentId'),
+    // userReviews: a.hasMany('UserReview', 'contentId'),
+    // userWatchHistories: a.hasMany('UserWatchHistory', 'contentId')
+  }).authorization(allow => [allow.publicApiKey()]),
 
   // User: a.model({
   //   id: a.id().required(),
