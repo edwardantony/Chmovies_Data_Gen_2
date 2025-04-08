@@ -13,33 +13,34 @@ Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export default function App() {
-  const [genres, setGenres] = useState<Array<Schema["Genres"]["type"]>>([]);
+ // const [genres, setGenres] = useState<Array<Schema["Genres"]["type"]>>([]);
 
-  function listGenres() {
-    client.models.Genres.observeQuery().subscribe({
-      next: (data) => setGenres([...data.items]),
-    });
-  }
+  // function listGenres() {
+  //   client.models.Genres.observeQuery().subscribe({
+  //     next: (data) => setGenres([...data.items]),
+  //   });
+  // }
 
   useEffect(() => {
-    listGenres();
+    //listGenres();
   }, []);
 
   function createTodo() {
-    client.models.Genres.create({
-      name: window.prompt("Genres content"),
-    });
+    // client.models.Genres.create({
+    //   name: window.prompt("Genres content"),
+    // });
+    console.log();
   }
 
   return (
     <main>
       <h1>My todos</h1>
       <button onClick={createTodo}>+ new</button>
-      <ul>
+      {/* <ul>
         {genres.map((todo) => (
           <li key={genre.id}>{genre.name}</li>
         ))}
-      </ul>
+      </ul> */}
       <div>
         🥳 App successfully hosted. Try creating a new todo.
         <br />
