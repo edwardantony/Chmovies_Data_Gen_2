@@ -124,7 +124,7 @@ const schema = a.schema({
     imagesDetails: a.json(),
     videoOriginal: a.json(),
     videoConverted: a.json(),
-    analyticsId: a.integer(),
+    analyticsId: a.string(),
     maturityRating: a.string(),
     audienceRating: a.float().default(0),
     audienceLike: a.integer().default(0),
@@ -147,7 +147,7 @@ const schema = a.schema({
   })
   .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index("titleName").name("byTitleName")
+    index("titleName").name("byTitleName").sortKeys(["sortOrder", "createdAt"])
   ])
   .authorization(allow => [allow.publicApiKey()]),
 
