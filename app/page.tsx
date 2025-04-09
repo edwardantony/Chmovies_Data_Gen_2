@@ -28,12 +28,14 @@ function AppContent() {
 
   function createTodo() {
     const titleName = window.prompt("Add Title");
-    const sortOrder = parseInt(window.prompt("Add Sort Order") || "0");
+    const releaseYear = window.prompt("Release Year");
+    const sortOrder = parseInt(window.prompt("Add Sort Order") || "9");
   
-    if (!titleName || isNaN(sortOrder)) return;
+    if (!titleName || !releaseYear || isNaN(sortOrder)) return;
   
     client.models.Titles.create({
       titleName,
+      releaseYear,
       sortOrder,
     } as any);
   }
@@ -45,7 +47,7 @@ function AppContent() {
       <button onClick={createTodo}>+ new</button>
       <ul>
         {contents.map((content) => (
-          <li key={content.id}>{content.titleName}</li>
+          <li key={content.id}>{content.titleName} ------ {content.releaseYear} ------ {content.sortOrder}</li>
         ))}
       </ul>
     </main>

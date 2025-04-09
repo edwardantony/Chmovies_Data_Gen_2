@@ -118,7 +118,7 @@ const schema = a.schema({
     titleName: a.string().required(),
     localTitleName: a.string(),
     description: a.string(),
-    releaseDate: a.date(),
+    releaseYear: a.integer().required(),
     duration: a.integer().default(0),
     type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
     imagesDetails: a.json(),
@@ -131,7 +131,7 @@ const schema = a.schema({
     audienceDislike: a.integer().default(0),
     isFeatured: a.boolean().default(false),
     status: a.enum(['Active', 'Inactive', 'Draft']),
-    sortOrder: a.integer().required(),
+    sortOrder: a.integer(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     
@@ -145,9 +145,9 @@ const schema = a.schema({
     // userReviews: a.hasMany('UserReview', 'contentId'),
     // userWatchHistories: a.hasMany('UserWatchHistory', 'contentId')
   })
-  .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index("titleName").name("byTitleName").sortKeys(["sortOrder", "createdAt"])
+    index("titleName").name("byTitleName"),
+    index("releaseYear").name("titlebyReleaseYear"),
   ])
   .authorization(allow => [allow.publicApiKey()]),
 
