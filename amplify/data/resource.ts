@@ -227,6 +227,7 @@ const schema = a.schema({
     releaseYear: a.integer().required(),
     duration: a.integer().default(0),
     type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
+    showTitleIn: a.enum(['CableTV', 'OTT', 'All', 'Draft']),
     tags: a.json(),
     imagesDetails: a.json(),
     videoOriginal: a.json(),
@@ -276,8 +277,6 @@ const schema = a.schema({
     gender: a.enum(['Male', 'Female', 'Other', 'PreferNotToSay']),
     role: a.json(),
     country: a.string(),
-    languagePreference: a.string().default('en'),
-    maturityPreference: a.string().default('PG'),
     status: a.enum(['Active', 'Inactive', 'Cancelled', 'Expired']),
     lastLogin: a.datetime(),
     accountStatus: a.enum(['Active', 'Suspended', 'Deleted']),
@@ -291,10 +290,35 @@ const schema = a.schema({
     notifications: a.hasMany('Notifications', 'userId'),
     payments: a.hasMany('Payments', 'userId'),
     userReviews: a.hasMany('UserReviews', 'userId'),
+    userProfiles: a.hasMany('UserProfiles', 'userId'),
     userReactions: a.hasMany('UserReactions', 'userId'),
     userSubscriptions: a.hasMany('UserSubscriptions', 'userId'),
     userWatchHistories: a.hasMany('UserWatchHistories', 'userId')
   })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
+
+
+  UserProfiles: a.model({
+    id: a.id().required(),
+    userId: a.id().required(),
+    profileName: a.string().required(),
+    pin: a.integer(),
+    languagePreference: a.json(),
+    isActive: a.boolean().default(true),
+    avatar: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+
+    // Relationships
+    user: a.belongsTo('Users', 'userId'),
+  })  
+  .secondaryIndexes(index => [
+    index('userId').name('byUserId'),
+  ])
   .authorization(allow => [
     allow.owner(),
     allow.group('Admin'),
