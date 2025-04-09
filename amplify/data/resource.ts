@@ -1,108 +1,112 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-AudioTracks: a.model({
-  id: a.id().required(),
-  language: a.string().required(),
-  code: a.string(),
-  createdAt: a.datetime(),
-  updatedAt: a.datetime(),
-  titlesAudioTracks: a.hasMany('TitlesAudioTracks', 'audioId')
-}).authorization(allow => [allow.publicApiKey()]),
+  AudioTracks: a.model({
+    id: a.id().required(),
+    language: a.string().required(),
+    code: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+    titlesAudioTracks: a.hasMany('TitlesAudioTracks', 'audioId')
+  }).authorization(allow => [allow.publicApiKey()]),
 
-TitlesAudioTracks: a.model({
-  titleId: a.id().required(),
-  audioId: a.id().required(),
-  createdAt: a.datetime(),
-  title: a.belongsTo('Titles', 'titleId'),
-  audioTrack: a.belongsTo('AudioTracks', 'audioId')
-}).authorization(allow => [allow.publicApiKey()]),
+  TitlesAudioTracks: a.model({
+    titleId: a.id().required(),
+    audioId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    audioTrack: a.belongsTo('AudioTracks', 'audioId')
+  })
+  .identifier(['titleId', 'audioId'])
+  .authorization(allow => [allow.publicApiKey()]),
 
   // Categories Model
-Categories: a.model({
-  id: a.id().required(),
-  name: a.string().required(),
-  sortOrder: a.integer(),
-  createdAt: a.datetime(),
-  updatedAt: a.datetime(),
-  titlesCategories: a.hasMany('TitlesCategories', 'categoryId'),
-})
-.secondaryIndexes((index) => [
-  index('name').name('categorybyName'),
-])
-.authorization((allow) => [allow.publicApiKey()]),
+  Categories: a.model({
+    id: a.id().required(),
+    name: a.string().required(),
+    sortOrder: a.integer(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+    titlesCategories: a.hasMany('TitlesCategories', 'categoryId'),
+  })
+  .secondaryIndexes((index) => [
+    index('name').name('categorybyName'),
+  ])
+  .authorization((allow) => [allow.publicApiKey()]),
 
-// TitlesCategories Join Model
-TitlesCategories: a.model({
-  titleId: a.id().required(),
-  categoryId: a.id().required(),
-  createdAt: a.datetime(),
-  title: a.belongsTo('Titles', 'titleId'),
-  category: a.belongsTo('Categories', 'categoryId'),
-})
-.identifier(['titleId', 'categoryId'])
-.authorization((allow) => [allow.publicApiKey()]),
-  
-
+  // TitlesCategories Join Model
+  TitlesCategories: a.model({
+    titleId: a.id().required(),
+    categoryId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    category: a.belongsTo('Categories', 'categoryId'),
+  })
+  .identifier(['titleId', 'categoryId'])
+  .authorization((allow) => [allow.publicApiKey()]),
+    
   // Genres Model
-Genres: a.model({
-  id: a.id().required(),
-  name: a.string().required(),
-  sortOrder: a.integer(),
-  createdAt: a.datetime(),
-  updatedAt: a.datetime(),
-  titlesGenres: a.hasMany('TitlesGenres', 'genreId'),
-})
-.secondaryIndexes((index) => [
-  index('name').name('genrebyName'),
-])
-.authorization((allow) => [allow.publicApiKey()]),
+  Genres: a.model({
+    id: a.id().required(),
+    name: a.string().required(),
+    sortOrder: a.integer(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+    titlesGenres: a.hasMany('TitlesGenres', 'genreId'),
+  })
+  .secondaryIndexes((index) => [
+    index('name').name('genrebyName'),
+  ])
+  .authorization((allow) => [allow.publicApiKey()]),
 
-// TitlesGenres Join Model
-TitlesGenres: a.model({
-  titleId: a.id().required(),
-  genreId: a.id().required(),
-  createdAt: a.datetime(),
-  title: a.belongsTo('Titles', 'titleId'),
-  genre: a.belongsTo('Genres', 'genreId'),
-})
-.identifier(['titleId', 'genreId'])
-.authorization((allow) => [allow.publicApiKey()]),
+  // TitlesGenres Join Model
+  TitlesGenres: a.model({
+    titleId: a.id().required(),
+    genreId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    genre: a.belongsTo('Genres', 'genreId'),
+  })
+  .identifier(['titleId', 'genreId'])
+  .authorization((allow) => [allow.publicApiKey()]),
 
-Country: a.model({
-  id: a.id().required(),
-  name: a.string().required(),
-  code: a.string(),
-  createdAt: a.datetime(),
-  updatedAt: a.datetime(),
-  titlesCountries: a.hasMany('TitlesCountry', 'countryId')
-}).authorization(allow => [allow.publicApiKey()]),
-  
-TitlesCountry: a.model({
-  titleId: a.id().required(),
-  countryId: a.id().required(),
-  createdAt: a.datetime(),
-  title: a.belongsTo('Titles', 'titleId'),
-  country: a.belongsTo('Country', 'countryId')
-}).authorization(allow => [allow.publicApiKey()]),
+  Country: a.model({
+    id: a.id().required(),
+    name: a.string().required(),
+    code: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+    titlesCountries: a.hasMany('TitlesCountries', 'countryId')
+  }).authorization(allow => [allow.publicApiKey()]),
+    
+  TitlesCountries: a.model({
+    titleId: a.id().required(),
+    countryId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    country: a.belongsTo('Country', 'countryId')
+  })
+  .identifier(['titleId', 'countryId'])
+  .authorization(allow => [allow.publicApiKey()]),
 
-Subtitles: a.model({
-  id: a.id().required(),
-  language: a.string().required(),
-  code: a.string(),
-  createdAt: a.datetime(),
-  updatedAt: a.datetime(),
-  titlesSubtitles: a.hasMany('TitlesSubtitles', 'subtitleId')
-}).authorization(allow => [allow.publicApiKey()]),
+  Subtitles: a.model({
+    id: a.id().required(),
+    language: a.string().required(),
+    code: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+    titlesSubtitles: a.hasMany('TitlesSubtitles', 'subtitleId')
+  }).authorization(allow => [allow.publicApiKey()]),
 
-TitlesSubtitles: a.model({
-  titleId: a.id().required(),
-  subtitleId: a.id().required(),
-  createdAt: a.datetime(),
-  title: a.belongsTo('Titles', 'titleId'),
-  subtitle: a.belongsTo('Subtitles', 'subtitleId')
-}).authorization(allow => [allow.publicApiKey()]),
-
+  TitlesSubtitles: a.model({
+    titleId: a.id().required(),
+    subtitleId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    subtitle: a.belongsTo('Subtitles', 'subtitleId')
+  })
+  .identifier(['titleId', 'subtitleId'])
+  .authorization(allow => [allow.publicApiKey()]),
 
   SubscriptionPlans: a.model({
     id: a.id().required(),
@@ -119,11 +123,20 @@ TitlesSubtitles: a.model({
     sortOrder: a.integer(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
-
-  //  Relationships 
-    userSubscriptions: a.hasMany('UserSubscriptions', 'planId')
+    // Relationships 
+    userSubscriptions: a.hasMany('UserSubscriptions', 'planId'),
+    titlesSubscriptionPlans: a.hasMany('TitlesSubscriptionPlans', 'planId')
   }).authorization(allow => [allow.publicApiKey()]),
 
+  TitlesSubscriptionPlans: a.model({
+    titleId: a.id().required(),
+    planId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    subscriptionPlan: a.belongsTo('SubscriptionPlans', 'planId')
+  })
+  .identifier(['titleId', 'planId'])
+  .authorization(allow => [allow.publicApiKey()]),
 
   Titles: a.model({
     id: a.id().required(),
@@ -148,15 +161,16 @@ TitlesSubtitles: a.model({
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     
-  //  Relationships (will be connected in Phase 3)
+    // Relationships
     categories: a.hasMany('TitlesCategories', 'titleId'),
     genres: a.hasMany('TitlesGenres', 'titleId'),
     audioTracks: a.hasMany('TitlesAudioTracks', 'titleId'),
-    countries: a.hasMany('TitlesCountry', 'titleId'),
+    countries: a.hasMany('TitlesCountries', 'titleId'),
     subtitles: a.hasMany('TitlesSubtitles', 'titleId'),
+    subscriptionPlans: a.hasMany('TitlesSubscriptionPlans', 'titleId'),
     userFavorites: a.hasMany('UserFavorites', 'titleId'),
     userReviews: a.hasMany('UserReviews', 'titleId'),
-    userWatchHistories: a.hasMany('UserWatchHistorys', 'titleId')
+    userWatchHistories: a.hasMany('UserWatchHistories', 'titleId')
   })
   .secondaryIndexes((index) => [
     index("titleName").name("byTitleName"),
@@ -192,7 +206,7 @@ TitlesSubtitles: a.model({
     payments: a.hasMany('Payments', 'userId'),
     userReviews: a.hasMany('UserReviews', 'userId'),
     userSubscriptions: a.hasMany('UserSubscriptions', 'userId'),
-    userWatchHistories: a.hasMany('UserWatchHistorys', 'userId')
+    userWatchHistories: a.hasMany('UserWatchHistories', 'userId')
   }).authorization(allow => [allow.owner()]),
 
   UserSubscriptions: a.model({
@@ -294,7 +308,7 @@ TitlesSubtitles: a.model({
   }).authorization(allow => [allow.owner()]),
 
 
-  UserWatchHistorys: a.model({
+  UserWatchHistories: a.model({
     id: a.id().required(),
     userId: a.id().required(),
     titleId: a.id().required(),
