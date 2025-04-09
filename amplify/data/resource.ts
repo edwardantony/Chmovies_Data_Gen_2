@@ -1,6 +1,59 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
+
+  Casts: a.model({
+    id: a.id().required(),
+    name: a.string().required(),
+    role: a.string(),
+    characterName: a.string(),
+    profilePicture: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+  
+    // Relationship
+    titlesCasts: a.hasMany('TitlesCasts', 'castId')
+  }).authorization(allow => [allow.publicApiKey()]),
+
+  TitlesCasts: a.model({
+    titleId: a.id().required(),
+    castId: a.id().required(),
+    createdAt: a.datetime(),
+  
+    // Relationships
+    title: a.belongsTo('Titles', 'titleId'),
+    cast: a.belongsTo('Casts', 'castId')
+  })
+  .identifier(['titleId', 'castId'])
+  .authorization(allow => [allow.publicApiKey()]),
+
+
+  Crews: a.model({
+    id: a.id().required(),
+    name: a.string().required(),
+    job: a.string().required(),
+    profilePicture: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+  
+    // Relationship
+    titlesCrews: a.hasMany('TitlesCrews', 'crewId')
+  }).authorization(allow => [allow.publicApiKey()]),
+
+  TitlesCrews: a.model({
+    titleId: a.id().required(),
+    crewId: a.id().required(),
+    createdAt: a.datetime(),
+  
+    // Relationships
+    title: a.belongsTo('Titles', 'titleId'),
+    crew: a.belongsTo('Crews', 'crewId')
+  })
+  .identifier(['titleId', 'crewId'])
+  .authorization(allow => [allow.publicApiKey()]),
+
+
+
   AudioTracks: a.model({
     id: a.id().required(),
     language: a.string().required(),
@@ -23,14 +76,15 @@ const schema = a.schema({
   // Categories Model
   Categories: a.model({
     id: a.id().required(),
-    name: a.string().required(),
+    categoryName: a.string().required(),
+    categorySymbol: a.string(),
     sortOrder: a.integer(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     titlesCategories: a.hasMany('TitlesCategories', 'categoryId'),
   })
   .secondaryIndexes((index) => [
-    index('name').name('categorybyName'),
+    index('categoryName').name('categorybyName'),
   ])
   .authorization((allow) => [allow.publicApiKey()]),
 
@@ -48,14 +102,15 @@ const schema = a.schema({
   // Genres Model
   Genres: a.model({
     id: a.id().required(),
-    name: a.string().required(),
+    genreName: a.string().required(),
+    genreSymbol: a.string(),
     sortOrder: a.integer(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     titlesGenres: a.hasMany('TitlesGenres', 'genreId'),
   })
   .secondaryIndexes((index) => [
-    index('name').name('genrebyName'),
+    index('genreName').name('genrebyName'),
   ])
   .authorization((allow) => [allow.publicApiKey()]),
 
@@ -70,7 +125,7 @@ const schema = a.schema({
   .identifier(['titleId', 'genreId'])
   .authorization((allow) => [allow.publicApiKey()]),
 
-  Country: a.model({
+  Countries: a.model({
     id: a.id().required(),
     name: a.string().required(),
     code: a.string(),
@@ -84,7 +139,7 @@ const schema = a.schema({
     countryId: a.id().required(),
     createdAt: a.datetime(),
     title: a.belongsTo('Titles', 'titleId'),
-    country: a.belongsTo('Country', 'countryId')
+    country: a.belongsTo('Countries', 'countryId')
   })
   .identifier(['titleId', 'countryId'])
   .authorization(allow => [allow.publicApiKey()]),
@@ -138,6 +193,31 @@ const schema = a.schema({
   .identifier(['titleId', 'planId'])
   .authorization(allow => [allow.publicApiKey()]),
 
+
+  MaturityRatings: a.model({
+    id: a.id().required(),
+    country: a.string().required(),
+    rating: a.string().required(),
+    description: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+  
+    // Relationships
+    titlesMaturityRatings: a.hasMany('TitlesMaturityRatings', 'maturityRatingId')
+  })
+  .authorization(allow => [allow.publicApiKey()]),
+
+  TitlesMaturityRatings: a.model({
+    titleId: a.id().required(),
+    maturityRatingId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    maturityRating: a.belongsTo('MaturityRatings', 'maturityRatingId')
+  })
+  .identifier(['titleId', 'maturityRatingId'])
+  .authorization(allow => [allow.publicApiKey()]),
+
+
   Titles: a.model({
     id: a.id().required(),
     partnerId: a.id(),
@@ -147,11 +227,12 @@ const schema = a.schema({
     releaseYear: a.integer().required(),
     duration: a.integer().default(0),
     type: a.enum(['Movie', 'TVShow', 'WebSeries', 'Live']),
+    tags: a.json(),
     imagesDetails: a.json(),
     videoOriginal: a.json(),
     videoConverted: a.json(),
     analyticsId: a.string(),
-    maturityRating: a.string(),
+    imdbRating: a.float().default(0),
     audienceRating: a.float().default(0),
     audienceLike: a.integer().default(0),
     audienceDislike: a.integer().default(0),
@@ -168,9 +249,13 @@ const schema = a.schema({
     countries: a.hasMany('TitlesCountries', 'titleId'),
     subtitles: a.hasMany('TitlesSubtitles', 'titleId'),
     subscriptionPlans: a.hasMany('TitlesSubscriptionPlans', 'titleId'),
+    maturityRatings: a.hasMany('TitlesMaturityRatings', 'titleId'),
     userFavorites: a.hasMany('UserFavorites', 'titleId'),
     userReviews: a.hasMany('UserReviews', 'titleId'),
-    userWatchHistories: a.hasMany('UserWatchHistories', 'titleId')
+    userReactions: a.hasMany('UserReactions', 'titleId'),
+    userWatchHistories: a.hasMany('UserWatchHistories', 'titleId'),
+    casts: a.hasMany('TitlesCasts', 'titleId'),
+    crews: a.hasMany('TitlesCrews', 'titleId'),
   })
   .secondaryIndexes((index) => [
     index("titleName").name("byTitleName"),
@@ -189,6 +274,7 @@ const schema = a.schema({
     profilePicture: a.string(),
     dateOfBirth: a.date(),
     gender: a.enum(['Male', 'Female', 'Other', 'PreferNotToSay']),
+    role: a.json(),
     country: a.string(),
     languagePreference: a.string().default('en'),
     maturityPreference: a.string().default('PG'),
@@ -205,9 +291,15 @@ const schema = a.schema({
     notifications: a.hasMany('Notifications', 'userId'),
     payments: a.hasMany('Payments', 'userId'),
     userReviews: a.hasMany('UserReviews', 'userId'),
+    userReactions: a.hasMany('UserReactions', 'userId'),
     userSubscriptions: a.hasMany('UserSubscriptions', 'userId'),
     userWatchHistories: a.hasMany('UserWatchHistories', 'userId')
-  }).authorization(allow => [allow.owner()]),
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   UserSubscriptions: a.model({
     id: a.id().required(),
@@ -230,7 +322,12 @@ const schema = a.schema({
    plan: a.belongsTo('SubscriptionPlans', 'planId'),
    invoice: a.hasMany('Invoices', 'userSubscriptionId'),
    payment: a.hasMany('Payments', 'userSubscriptionId')
-  }).authorization(allow => [allow.owner()]),
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   Payments: a.model({
     id: a.id().required(),
@@ -252,8 +349,12 @@ const schema = a.schema({
     user: a.belongsTo('Users', 'userId'),
     userSubscription: a.belongsTo('UserSubscriptions', 'userSubscriptionId'),
     invoices: a.hasMany('Invoices', 'paymentId')
-  }).authorization(allow => [allow.owner()]),
-
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   Invoices: a.model({
     id: a.id().required(),
@@ -278,7 +379,12 @@ const schema = a.schema({
      user: a.belongsTo('Users', 'userId'),
      userSubscription: a.belongsTo('UserSubscriptions', 'userSubscriptionId'),
      payment: a.belongsTo('Payments', 'paymentId')
-  }).authorization(allow => [allow.owner()]),
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   UserFavorites: a.model({
     id: a.id().required(),
@@ -289,8 +395,12 @@ const schema = a.schema({
     // Relationships
     user: a.belongsTo('Users', 'userId'),
     title: a.belongsTo('Titles', 'titleId')
-  }).authorization(allow => [allow.owner()]),
-
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   UserReviews: a.model({
     id: a.id().required(),
@@ -305,7 +415,28 @@ const schema = a.schema({
     // Relationships
     user: a.belongsTo('Users', 'userId'),
     title: a.belongsTo('Titles', 'titleId')
-  }).authorization(allow => [allow.owner()]),
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
+
+  UserReactions: a.model({
+    id: a.id().required(),
+    userId: a.id().required(),
+    titleId: a.id().required(),
+    reactionType: a.enum(['Like', 'Dislike']),
+    createdAt: a.datetime(),
+    // Relationships
+    user: a.belongsTo('Users', 'userId'),
+    title: a.belongsTo('Titles', 'titleId')
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
 
   UserWatchHistories: a.model({
@@ -321,7 +452,12 @@ const schema = a.schema({
     // Relationships
     user: a.belongsTo('Users', 'userId'),
     title: a.belongsTo('Titles', 'titleId')
-  }).authorization(allow => [allow.owner()]),
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   Logs: a.model({
     id: a.id().required(),
@@ -336,7 +472,12 @@ const schema = a.schema({
 
     // Relationships
     user: a.belongsTo('Users', 'userId')
-  }).authorization(allow => [allow.owner()]),
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   Notifications: a.model({
     id: a.id().required(),
@@ -352,7 +493,12 @@ const schema = a.schema({
 
     // Relationships
     user: a.belongsTo('Users', 'userId')
-  }).authorization(allow => [allow.owner()])
+  })
+  .authorization(allow => [
+    allow.owner(),
+    allow.group('Admin'),
+    allow.group('Moderator').to(['read', 'update'])
+  ]),
 
   }).authorization(allow => [allow.authenticated()]);
 
