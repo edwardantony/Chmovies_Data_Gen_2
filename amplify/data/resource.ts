@@ -112,11 +112,11 @@ const schema = a.schema({
   // }).authorization(allow => [allow.publicApiKey()]),
 
 
-  Content: a.model({
+  Titles: a.model({
     id: a.id().required(),
     partnerId: a.id(),
-    title: a.string().required(),
-    localTitle: a.string(),
+    titleName: a.string().required(),
+    localTitleName: a.string(),
     description: a.string(),
     releaseDate: a.date(),
     duration: a.integer().default(0),
@@ -124,7 +124,6 @@ const schema = a.schema({
     imagesDetails: a.json(),
     videoOriginal: a.json(),
     videoConverted: a.json(),
-    videoId: a.string(),
     analyticsId: a.integer(),
     maturityRating: a.string(),
     audienceRating: a.float().default(0),
@@ -148,7 +147,7 @@ const schema = a.schema({
   })
   .identifier(['id', 'sortOrder'])
   .secondaryIndexes((index) => [
-    index("title").name("title-index")
+    index("titleName").name("byTitleName")
   ])
   .authorization(allow => [allow.publicApiKey()]),
 
