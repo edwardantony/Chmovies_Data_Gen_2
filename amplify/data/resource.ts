@@ -18,45 +18,56 @@ const schema = a.schema({
   //   audioTrack: a.belongsTo('AudioTrack', 'audioId')
   // }).authorization(allow => [allow.publicApiKey()]),
 
-  // Category: a.model({
-  //   id: a.id().required(),
-  //   name: a.string().required(),
-  //   sortOrder: a.integer().default(0),
-  //   createdAt: a.datetime(),
-  //   updatedAt: a.datetime(),
-  //   contentCategories: a.hasMany('ContentCategory', 'categoryId')
-  // })
-  // .authorization(allow => [allow.publicApiKey()]),
+  // Categories Model
+Categories: a.model({
+  id: a.id().required(),
+  name: a.string().required(),
+  sortOrder: a.integer(),
+  createdAt: a.datetime(),
+  updatedAt: a.datetime(),
+  titlesCategories: a.hasMany('TitlesCategories', 'categoryId'),
+})
+.secondaryIndexes((index) => [
+  index('name').name('categorybyName'),
+])
+.authorization((allow) => [allow.publicApiKey()]),
 
-  // ContentCategory: a.model({
-  //   contentId: a.id().required(),
-  //   categoryId: a.id().required(),
-  //   createdAt: a.datetime(),
-  //   content: a.belongsTo('Content', 'contentId'),
-  //   category: a.belongsTo('Category', 'categoryId')
-  // }).authorization(allow => [allow.publicApiKey()]),
+// TitlesCategories Join Model
+TitlesCategories: a.model({
+  titleId: a.id().required(),
+  categoryId: a.id().required(),
+  createdAt: a.datetime(),
+  title: a.belongsTo('Titles', 'titleId'),
+  category: a.belongsTo('Categories', 'categoryId'),
+})
+.identifier(['titleId', 'categoryId'])
+.authorization((allow) => [allow.publicApiKey()]),
+  
 
-  // Genres: a.model({
-  //   id: a.id().required(),
-  //   name: a.string().required(),
-  //   sortOrder: a.integer().default(0),
-  //   createdAt: a.datetime(),
-  //   updatedAt: a.datetime(),
-  //   contentGenres: a.hasMany('ContentGenre', 'genreId') 
-  // })
-  // .identifier(["id", "sortOrder"])
-  // .secondaryIndexes((index) => [
-  //     index("id").name("byCreated").sortKeys(["createdAt"]),
-  // ])
-  // .authorization((allow) => [allow.publicApiKey()]),
+  // Genres Model
+Genres: a.model({
+  id: a.id().required(),
+  name: a.string().required(),
+  sortOrder: a.integer(),
+  createdAt: a.datetime(),
+  updatedAt: a.datetime(),
+  titlesGenres: a.hasMany('TitlesGenres', 'genreId'),
+})
+.secondaryIndexes((index) => [
+  index('name').name('genrebyName'),
+])
+.authorization((allow) => [allow.publicApiKey()]),
 
-  // ContentGenres: a.model({
-  //   contentId: a.id().required(),
-  //   genreId: a.id().required(),
-  //   genreSortOrder: a.integer().required(),
-  //   createdAt: a.datetime(),
-  //   content: a.belongsTo('Content', 'contentId'),
-  // }).authorization((allow) => [allow.publicApiKey()]),
+// TitlesGenres Join Model
+TitlesGenres: a.model({
+  titleId: a.id().required(),
+  genreId: a.id().required(),
+  createdAt: a.datetime(),
+  title: a.belongsTo('Titles', 'titleId'),
+  genre: a.belongsTo('Genres', 'genreId'),
+})
+.identifier(['titleId', 'genreId'])
+.authorization((allow) => [allow.publicApiKey()]),
 
   // Country: a.model({
   //   id: a.id().required(),
@@ -136,14 +147,14 @@ const schema = a.schema({
     updatedAt: a.datetime(),
     
   //  Relationships (will be connected in Phase 3)
-    // audioTracks: a.hasMany('ContentAudioTrack', 'contentId'),
-    // categories: a.hasMany('ContentCategory', 'contentId'),
-    // countries: a.hasMany('ContentCountry', 'contentId'),
-    // genres: a.hasMany('ContentGenre', 'contentId'),
-    // subtitles: a.hasMany('ContentSubtitle', 'contentId'),
-    // userFavorites: a.hasMany('UserFavorite', 'contentId'),
-    // userReviews: a.hasMany('UserReview', 'contentId'),
-    // userWatchHistories: a.hasMany('UserWatchHistory', 'contentId')
+    categories: a.hasMany('TitlesCategories', 'titleId'),
+    genres: a.hasMany('TitlesGenres', 'titleId'),
+    // audioTracks: a.hasMany('TitlesAudioTrack', 'titleId'),
+    // countries: a.hasMany('TitlesCountry', 'titleId'),
+    // subtitles: a.hasMany('TitlesSubtitle', 'titleId'),
+    // userFavorites: a.hasMany('UserFavorite', 'titleId'),
+    // userReviews: a.hasMany('UserReview', 'titleId'),
+    // userWatchHistories: a.hasMany('UserWatchHistory', 'titleId')
   })
   .secondaryIndexes((index) => [
     index("titleName").name("byTitleName"),
