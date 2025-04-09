@@ -1,22 +1,22 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  // AudioTrack: a.model({
-  //   id: a.id().required(),
-  //   language: a.string().required(),
-  //   code: a.string(),
-  //   createdAt: a.datetime(),
-  //   updatedAt: a.datetime(),
-  //   contentAudioTracks: a.hasMany('ContentAudioTrack', 'audioId')
-  // }).authorization(allow => [allow.publicApiKey()]),
+  AudioTracks: a.model({
+    id: a.id().required(),
+    language: a.string().required(),
+    code: a.string(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+    titlesAudioTracks: a.hasMany('TitlesAudioTracks', 'audioId')
+  }).authorization(allow => [allow.publicApiKey()]),
 
-  // ContentAudioTrack: a.model({
-  //   contentId: a.id().required(),
-  //   audioId: a.id().required(),
-  //   createdAt: a.datetime(),
-  //   content: a.belongsTo('Content', 'contentId'),
-  //   audioTrack: a.belongsTo('AudioTrack', 'audioId')
-  // }).authorization(allow => [allow.publicApiKey()]),
+  TitlesAudioTracks: a.model({
+    titleId: a.id().required(),
+    audioId: a.id().required(),
+    createdAt: a.datetime(),
+    title: a.belongsTo('Titles', 'titleId'),
+    audioTrack: a.belongsTo('AudioTracks', 'audioId')
+  }).authorization(allow => [allow.publicApiKey()]),
 
   // Categories Model
 Categories: a.model({
@@ -75,14 +75,14 @@ TitlesGenres: a.model({
   //   code: a.string(),
   //   createdAt: a.datetime(),
   //   updatedAt: a.datetime(),
-  //   contentCountries: a.hasMany('ContentCountry', 'countryId')
+  //   titlesCountries: a.hasMany('TitlesCountry', 'countryId')
   // }).authorization(allow => [allow.publicApiKey()]),
   
-  // ContentCountry: a.model({
-  //   contentId: a.id().required(),
+  // TitlesCountry: a.model({
+  //   titleId: a.id().required(),
   //   countryId: a.id().required(),
   //   createdAt: a.datetime(),
-  //   content: a.belongsTo('Content', 'contentId'),
+  //   titles: a.belongsTo('Titles', 'titleId'),
   //   country: a.belongsTo('Country', 'countryId')
   // }).authorization(allow => [allow.publicApiKey()]),
 
@@ -92,14 +92,14 @@ TitlesGenres: a.model({
   //   code: a.string(),
   //   createdAt: a.datetime(),
   //   updatedAt: a.datetime(),
-  //   contentSubtitles: a.hasMany('ContentSubtitle', 'subtitleId')
+  //   titlesSubtitles: a.hasMany('TitlesSubtitle', 'subtitleId')
   // }).authorization(allow => [allow.publicApiKey()]),
 
-  // ContentSubtitle: a.model({
-  //   contentId: a.id().required(),
+  // TitlesSubtitle: a.model({
+  //   titleId: a.id().required(),
   //   subtitleId: a.id().required(),
   //   createdAt: a.datetime(),
-  //   content: a.belongsTo('Content', 'contentId'),
+  //   titles: a.belongsTo('Titles', 'titleId'),
   //   subtitle: a.belongsTo('Subtitle', 'subtitleId')
   // }).authorization(allow => [allow.publicApiKey()]),
 
@@ -149,7 +149,7 @@ TitlesGenres: a.model({
   //  Relationships (will be connected in Phase 3)
     categories: a.hasMany('TitlesCategories', 'titleId'),
     genres: a.hasMany('TitlesGenres', 'titleId'),
-    // audioTracks: a.hasMany('TitlesAudioTrack', 'titleId'),
+    audioTracks: a.hasMany('TitlesAudioTracks', 'titleId'),
     // countries: a.hasMany('TitlesCountry', 'titleId'),
     // subtitles: a.hasMany('TitlesSubtitle', 'titleId'),
     // userFavorites: a.hasMany('UserFavorite', 'titleId'),
@@ -267,31 +267,31 @@ TitlesGenres: a.model({
   // UserFavorite: a.model({
   //   id: a.id().required(),
   //   userId: a.id().required(),
-  //   contentId: a.id().required(),
+  //   titleId: a.id().required(),
   //   createdAt: a.datetime(),
   //   user: a.belongsTo('User', 'userId'),
-  //   content: a.belongsTo('Content', 'contentId')
+  //   title: a.belongsTo('Titles', 'titleId')
   // }).authorization(allow => [allow.owner()]),
 
 
   // UserReview: a.model({
   //   id: a.id().required(),
   //   userId: a.id().required(),
-  //   contentId: a.id().required(),
+  //   titleId: a.id().required(),
   //   rating: a.integer().required(),
   //   reviewText: a.string(),
   //   isApproved: a.boolean().default(false),
   //   createdAt: a.datetime(),
   //   updatedAt: a.datetime(),
   //   user: a.belongsTo('User', 'userId'),
-  //   content: a.belongsTo('Content', 'contentId')
+  //   title: a.belongsTo('Titles', 'titleId')
   // }).authorization(allow => [allow.owner()]),
 
 
   // UserWatchHistory: a.model({
   //   id: a.id().required(),
   //   userId: a.id().required(),
-  //   contentId: a.id().required(),
+  //   titleId: a.id().required(),
   //   progress: a.integer().required(),
   //   duration: a.integer().required(),
   //   lastWatchedAt: a.datetime().required(),
@@ -299,7 +299,7 @@ TitlesGenres: a.model({
   //   createdAt: a.datetime(),
   //   updatedAt: a.datetime(),
   //   user: a.belongsTo('User', 'userId'),
-  //   content: a.belongsTo('Content', 'contentId')
+  //   title: a.belongsTo('Titles', 'titleId')
   // }).authorization(allow => [allow.owner()]),
 
   // Log: a.model({
@@ -320,7 +320,7 @@ TitlesGenres: a.model({
   //   userId: a.id().required(),
   //   title: a.string().required(),
   //   message: a.string().required(),
-  //   type: a.enum(['System', 'Payment', 'Content', 'Promotional']),
+  //   type: a.enum(['System', 'Payment', 'Titles', 'Promotional']),
   //   isRead: a.boolean().default(false),
   //   relatedId: a.string(),
   //   relatedType: a.string(),
