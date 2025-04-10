@@ -167,9 +167,10 @@ const schema = a.schema({
     id: a.id().required(),
     name: a.string().required(),
     description: a.string(),
+    type: a.enum(['CabelTV', 'OTT']),
     price: a.float().required(),
     currency: a.string().default('USD'),
-    billingCycle: a.enum(['Monthly', 'Quarterly', 'Yearly', 'Lifetime']),
+    billingCycle: a.enum(['Daily', 'Monthly', 'Quarterly', 'Yearly', 'Lifetime']),
     durationDays: a.integer().required(),
     maxScreens: a.integer().default(1),
     videoQuality: a.enum(['SD', 'HD', 'FHD', 'UHD']),
@@ -255,6 +256,7 @@ const schema = a.schema({
     userReviews: a.hasMany('UserReviews', 'titleId'),
     userReactions: a.hasMany('UserReactions', 'titleId'),
     userWatchHistories: a.hasMany('UserWatchHistories', 'titleId'),
+    userSubscriptions: a.hasMany('UserSubscriptions', 'titleId'),
     casts: a.hasMany('TitlesCasts', 'titleId'),
     crews: a.hasMany('TitlesCrews', 'titleId'),
   })
@@ -329,28 +331,41 @@ const schema = a.schema({
     id: a.id().required(),
     userId: a.id().required(),
     planId: a.id().required(),
+    titleId: a.id(),
     startDate: a.date().required(),
     endDate: a.date().required(),
-    status: a.enum(['Active', 'Inactive', 'Cancelled', 'Expired', 'Pending']),
+    type: a.enum(['CableTV', 'OTT']),
+    status: a.enum(['Active', 'Inactive', 'Cancelled', 'Expired', 'Pending', 'Refunded', 'Failed']),
     autoRenew: a.boolean().default(true),
     paymentMethod: a.string(),
     lastPaymentDate: a.datetime(),
     nextBillingDate: a.date(),
     cancellationDate: a.date(),
     cancellationReason: a.string(),
+    trialPeriodEnd: a.date(),
+    billingAddress: a.json(),
     createdAt: a.datetime(),
     updatedAt: a.datetime(),
     
     // Relationships
-   user: a.belongsTo('Users', 'userId'),
-   plan: a.belongsTo('SubscriptionPlans', 'planId'),
-   invoice: a.hasMany('Invoices', 'userSubscriptionId'),
-   payment: a.hasMany('Payments', 'userSubscriptionId')
+    user: a.belongsTo('Users', 'userId'),
+    plan: a.belongsTo('SubscriptionPlans', 'planId'),
+    title: a.belongsTo('Titles', 'titleId'),
+    invoices: a.hasMany('Invoices', 'userSubscriptionId'),
+    payments: a.hasMany('Payments', 'userSubscriptionId'),
   })
+  .secondaryIndexes(index => [
+    index('userId').name('byUser'),
+    index('planId').name('byPlan'),
+    index('titleId').name('byTitle'),
+    index('status').name('byStatus'),
+    index('endDate').name('byExpiration'),
+    index('type').name('byType')
+  ])
   .authorization(allow => [
     allow.owner(),
-    allow.group('Admin'),
-    allow.group('Moderator').to(['read', 'update'])
+    allow.groups(['Admin']),
+    allow.groups(['Moderator']).to(['read', 'update'])
   ]),
 
   Payments: a.model({
